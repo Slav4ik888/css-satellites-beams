@@ -1,6 +1,6 @@
 /* Always set the map height explicitly to define the size of the div
-  * element that contains the map. */
-  #map {
+ * element that contains the map. */
+#map {
   height: 100%;
 }
 
@@ -24,4 +24,4 @@ body {
   font-family: "Roboto", "sans-serif";
   line-height: 30px;
   padding-left: 10px;
-}
+}      
