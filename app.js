@@ -1,7 +1,7 @@
 "use strict";
 
 const mockMarkers = [
-
+  {coords: { lat: 53.59778, lng: 103.29639 }}
 ];
 
 const GMAK = `AIzaSyDN2t-jztEv0j2u-Ep3Zw9B8y0hneXCl6s`;
@@ -30,6 +30,13 @@ function initMap() {
 
   document.getElementById("submit").addEventListener("click", function() {
     geocodeAddress(geocoder, map);
+  });
+
+  // Выводим тестовый маркер
+  const latLng = new google.maps.LatLng(mockMarkers[0].coords.lat,mockMarkers[0].coords.lng);
+  const marker = new google.maps.Marker({
+    map: map,
+    position: latLng
   });
 };
 
