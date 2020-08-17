@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Geocoding Service</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      
+      const GMAK = `AIzaSyDN2t-jztEv0j2u-Ep3Zw9B8y0hneXCl6s`;
+
+      const satUrl = `http://maps.satbeams.com/!ajax/displaymap?hsize=570&vsize=400&norad=27528&beam=3&lat=38&lng=0&marker_lat=38&marker_lng=0&zoom=2&minEIRP=42&levels=2&infowindow=1&direction=1&limits=1&marker=1&mapstyle=2&GMAK=${GMAK}`;
+
+      setTimeout(() => {
+        // const hidden = document.querySelector(`#map`);
+        // // Убираем overflow который подставляет Tilda
+        // if (hidden) {
+        //   hidden.style.overflow = null;
+        //   hidden.style.position = null;
+        // }
+        // SATBEAMS
+        const sat = document.createElement('script');
+        sat.src = satUrl;
+        
+        document.getElementById('map').insertAdjacentElement('beforeend',sat);
+
+      }, 1000);
+        
+    </script>
+
+
+  </body>
+</html>

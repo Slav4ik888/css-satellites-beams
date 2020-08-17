@@ -1,7 +1,16 @@
 /* Always set the map height explicitly to define the size of the div
  * element that contains the map. */
+.container {
+  height: 100%;  
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  
+}
 #map {
-  height: 100%;
+  height: 80%;
+  width: 80%;
+  cursor: crosshair;
 }
 
 /* Optional: Makes the sample page fill the window. */
@@ -15,7 +24,7 @@ body {
 #floating-panel {
   position: absolute;
   top: 10px;
-  left: 25%;
+  left: 35%;
   z-index: 5;
   background-color: #fff;
   padding: 5px;
@@ -24,4 +33,11 @@ body {
   font-family: "Roboto", "sans-serif";
   line-height: 30px;
   padding-left: 10px;
+
 }      
+
+.textarea {
+  display: flex;
+  align-items: left;
+  flex-direction: column;
+}
