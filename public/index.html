@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Geocoding Service</title>
+    <title>Готовые решения спутниковой связи по заданным координатам</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script src="./app.js" type="module"></script>
-    <script src="./init.js" defer></script>
+    <!-- <script src="./app.js" type="module"></script>
+    <script src="./init.js" defer></script> -->
 
     <!-- <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDN2t-jztEv0j2u-Ep3Zw9B8y0hneXCl6s&callback=initMap"
@@ -14,21 +14,21 @@
     <link rel="stylesheet" type="text/css" href="./style.css" />
   </head>
   <body>
-    <div class="container">
+    <!-- <div class="container">
       <div id="floating-panel">
         <input id="address" type="textbox" value="Иркутск" />
         <input id="submit" type="button" value="Geocode" />
-      </div>
-      <div id="map"></div>
+      </div> -->
+      <div id="root"></div>
 
-      <div class="textarea">
+      <!-- <div class="textarea">
           <div>Вставьте массив координат:</div>
           <textarea class="textarea-input" rows="10" cols="85" placeholder="Вставьте массив координат..." name="text"></textarea>
         <input class="textarea-submit" type="submit" value="Обработать" />
       </div>
 
       <div class="view"></div>
-
-    </div>  
+    </div>   -->
+    <script src="/bundle.js"></script>
   </body>
 </html>

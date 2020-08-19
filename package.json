@@ -1,0 +1,47 @@
+{
+  "name": "css-map-sat-beams",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Карта спутниковых лучей",
+  "scripts": {
+    "eslint": "eslint --ext .jsx --ext .js src/",
+    "test": "npm run eslint && npm run test.jest",
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server",
+    "test.jest": "jest"
+  },
+  "devDependencies": {
+    "@babel/core": "7.11.1",
+    "@babel/preset-env": "7.11.0",
+    "@babel/preset-react": "7.10.4",
+    "@types/jest": "26.0.10",
+    "@types/react-test-renderer": "16.9.3",
+    "babel-jest": "26.3.0",
+    "babel-loader": "8.1.0",
+    "enzyme": "3.11.0",
+    "enzyme-adapter-react-16": "1.15.3",
+    "eslint": "7.7.0",
+    "eslint-config-htmlacademy": "0.5.2",
+    "eslint-plugin-react": "7.20.6",
+    "jest": "26.4.0",
+    "prop-types": "15.7.2",
+    "react-test-renderer": "16.13.1",
+    "ts-jest": "26.2.0",
+    "webpack": "4.44.1",
+    "webpack-cli": "3.3.12",
+    "webpack-dev-server": "3.11.0"
+  },
+  "engines": {
+    "node": "10"
+  },
+  "dependencies": {
+    "history": "4.10.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-redux": "7.2.1",
+    "react-router-dom": "5.2.0",
+    "redux": "4.0.5",
+    "redux-thunk": "2.3.0",
+    "reselect": "4.0.0"
+  }
+}
