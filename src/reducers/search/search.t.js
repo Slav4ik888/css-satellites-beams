@@ -1,5 +1,5 @@
 import MockAdapter from 'axios-mock-adapter';
-import {reducer, ActionType, ActionCreator, Operation} from './data.js';
+import {reducer, ActionType, ActionCreator, Operation} from './search.js';
 import {createAPI} from '../../api.js';
 import {offers} from '../../mocks/offers.js';
 import {testOffer} from '../../mocks/test-offer.js';

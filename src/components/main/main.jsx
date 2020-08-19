@@ -1,10 +1,20 @@
 import React from 'react';
-import GoogleMap from '../google-map/google-map.jsx';
 
+import Instruction from '../instruction/instruction';
+import SatList from '../sat-list/sat-list';
+import FormPlaceSetup from '../form-place-setup/form-place-setup';
+import GoogleMap from '../google-map/google-map';
+import Footer from '../footer/footer';
 
 const Main = () => {
   return (
-    <GoogleMap />
+    <div className="container">
+      <Instruction />
+      <FormPlaceSetup />
+      <SatList />
+      <GoogleMap />
+      <Footer />
+    </div>
   );
 };
 

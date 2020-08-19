@@ -5,7 +5,7 @@ import {history} from '../../history.js';
 
 import pt from 'prop-types';
 
-import Main from '../main/main.jsx';
+import Main from '../main/main';
 
 // import {AppRoute} from '../../utils/const.js';
 

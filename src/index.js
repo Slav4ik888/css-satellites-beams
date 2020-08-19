@@ -1,29 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import {createStore, applyMiddleware, compose} from 'redux';
-// import thunk from 'redux-thunk';
-// import {Provider} from 'react-redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
+import {Provider} from 'react-redux';
+import {logger} from 'redux-logger';
 
-import App from './components/App/app.jsx';
+import App from './components/app/app';
 
-// import reducer from './reducers/reducer.js';
+import reducer from './reducers/reducer.js';
 
-// const store = createStore(
-//     reducer,
-//     compose(
-//         // withExtraArgument применяем чтобы можно было передать 3й аргумент api
-//         // потому что thunk принимает только 2 аргумента
-//         applyMiddleware(thunk.withExtraArgument(api)),
-//         window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f
-//     )
-// );
+const store = createStore(
+    reducer, applyMiddleware(thunk, logger)
+);
 
 // store.dispatch(DataOperation.loadOffers());
 // store.dispatch(UserOperation.checkAuth());
 
 
 ReactDOM.render(
-    // <Provider store={store}>
-    <App />
-    // </Provider>
+    <Provider store={store}>
+      <App />
+    </Provider>
     , document.getElementById(`root`));

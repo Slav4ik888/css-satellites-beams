@@ -1,5 +1,5 @@
 export const NameSpace = {
-  DATA: `DATA`,
+  SEARCH: `SEARCH`,
   TRAVEL: `TRAVEL`,
   USER: `USER`,
 };
