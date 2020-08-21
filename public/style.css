@@ -43,8 +43,9 @@ form {
   padding-left: 10px;
 
 }      
-
-/* Instruction */
+/*************************/
+/*       Instruction     */
+/*************************/
 .instruction {
   width: 100%;
   background-color: #f5f5f5;
@@ -64,8 +65,9 @@ form {
 }
 
 
-/* SatList */
-
+/*************************/
+/*        SatList        */
+/*************************/
 .sat-list {
   width: 100%;
   background-color: #f5f5f5;
@@ -95,7 +97,55 @@ form {
   align-items: center;
 }
 
-/* FormPlaceSetup */
+.sat-list .input-button {
+
+}
+
+/*    СТИЛИЗАЦИЯ INPUT   */
+/* .input {
+  width: 100%;
+  border: none;
+  text-align: center;
+  outline:none;
+  background-color: #e5e9f8;
+}
+.input:hover {
+  background-color: #dae0f8;
+}
+.input:focus { 
+  width: 100%;
+  border: none;
+  background-color: #dae0f8;
+}
+.input:focus::placeholder { 
+  border: none;
+  background-color: #dae0f8;
+} */
+
+/*  СТИЛИЗАЦИЯ CHECKBOX  */
+
+.sat-list-checkbox {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.sat-list-checkbox-label {
+  border:none;
+  border-bottom: 3px solid #f5f5f5;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
+.sat-list-checkbox:checked + .sat-list-checkbox-label {
+  border-bottom: 3px solid #1f253d;
+  color: #1f253d;
+}
+
+
+/*************************/
+/*     FormPlaceSetup    */
+/*************************/
 .form-place-setup {
   width: 100%;
   background-color: #eeeded;
@@ -201,7 +251,9 @@ form {
 }
 
 
-/* Footer */
+/*************************/
+/*         Footer        */
+/*************************/
 .footer {
   width: 100%;
   background-color: #eeeded;

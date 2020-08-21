@@ -3,20 +3,32 @@ import {connect} from 'react-redux';
 import pt from 'prop-types';
 import {coordsType, satType} from '../../utils/prop-types-templates';
 
-import {getActiveSatellite} from '../../reducers/search/selectors';
+import {getActiveSatellite, getCheckedSats} from '../../reducers/search/selectors';
 import {ActionCreator} from '../../reducers/search/search';
 import {SATELLITES} from '../../utils/const';
 
 
-const SatList = ({activeSatellite}) => {
+const SatList = ({activeSatellite, checkedSats, setCheckedSats, removeCheckedSats}) => {
+
+  const handleChangeCheckedSats = (e, id) => {
+    const value = e.target.checked;
+    if (value) {
+      setCheckedSats(id);
+
+    } else {
+      removeCheckedSats(id);
+    }
+  };
 
   return (
     <div className="sat-list">
       <div className="container">
         {SATELLITES.map((sat) => (<div key={sat.id} className="input-container">
-          <input type="checkbox" className="input-button"
-            onChange={() => {}} id={sat.id} />
-          <label className="game__check" htmlFor={sat.id}>{sat.name}</label>
+          <input type="checkbox" className="sat-list-checkbox" id={sat.id}
+            onChange={(e) => handleChangeCheckedSats(e, sat.id)}
+            checked={checkedSats.includes(sat.id)}
+          />
+          <label className="sat-list-checkbox-label" htmlFor={sat.id}>{sat.name}</label>
         </div>))}
       </div>
     </div>
@@ -25,16 +37,27 @@ const SatList = ({activeSatellite}) => {
 
 SatList.propTypes = {
   activeSatellite: pt.shape(satType).isRequired,
+  checkedSats: pt.arrayOf(pt.string),
+  setCheckedSats: pt.func.isRequired,
+  removeCheckedSats: pt.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   activeSatellite: getActiveSatellite(state),
+  checkedSats: getCheckedSats(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setActivePointerCoords(coords) {
     dispatch(ActionCreator.setActivePointerCoords(coords));
   },
+  setCheckedSats(id) {
+    dispatch(ActionCreator.setCheckedSats(id));
+  },
+  removeCheckedSats(id) {
+    dispatch(ActionCreator.removeCheckedSats(id));
+  },
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SatList);

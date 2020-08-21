@@ -4,8 +4,10 @@ import pt from 'prop-types';
 import {coordsType, satType} from '../../utils/prop-types-templates';
 
 import {MAP_CENTER, MAP_ZOOM_START, MAP_TYPE_ID, MAP_MARKER_MAIN_POSITION} from '../../utils/const';
-import {getActivePointerCoords, getActiveSatellite} from '../../reducers/search/selectors';
+import {getActivePointerCoords, getActiveSatellite, getCheckedSats} from '../../reducers/search/selectors';
 import {ActionCreator} from '../../reducers/search/search';
+
+import {SATELLITES} from '../../utils/const';
 
 
 class GoogleMap extends React.Component {
@@ -16,13 +18,17 @@ class GoogleMap extends React.Component {
     this.removeMarkerMain = this.removeMarkerMain.bind(this);
     this.setActiveBeam = this.setActiveBeam.bind(this);
     this.removeActiveBeam = this.removeActiveBeam.bind(this);
-    this.setActiveSatellite = this.setActiveSatellite.bind(this);
-    this.removeActiveSatellite = this.removeActiveSatellite.bind(this);
+    this.setActiveSat = this.setActiveSat.bind(this);
+    this.removeActiveSat = this.removeActiveSat.bind(this);
+    this.setPoligon = this.setPoligon.bind(this);
+    this.removePoligon = this.removePoligon.bind(this);
 
     this._map = null;
     this._markerMain = null;
     this._activeBeam = null;
-    this._markerSatellite = null;
+    this._markerSat = null;
+    this._poligonSats = [];
+    this._SatBeam1 = null;
 
     this.state = {
       mapIsReady: false,
@@ -42,9 +48,9 @@ class GoogleMap extends React.Component {
     document.getElementsByTagName(`head`)[0].appendChild(script);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (this.state.mapIsReady) {
-      if (!this._map) {
+      if (!this._map) { // Первичная прорисовка
         // Display the map
         this._map = new window.google.maps.Map(document.getElementById(`map`), {
           center: MAP_CENTER,
@@ -63,14 +69,33 @@ class GoogleMap extends React.Component {
         this._markerMain.addListener(`dragend`, this.setPointerCoordToReducer);
         // Выводим луч
         this.setActiveBeam();
-        this.setActiveSatellite();
+        this.setActiveSat();
 
-      } else {
+      } else { // Все последующие update
         // Удаляем старый луч и рисуем новый
         this.removeMarkerMain();
         this.setMarkerMain();
         this.removeActiveBeam();
         this.setActiveBeam();
+
+        // Если нажали на спутник
+        if (this.props.checkedSats !== prevProps.checkedSats) {
+          let checkedSats = this.props.checkedSats;
+          // Перебираем новый и проверяем добавился или убавился
+          let result;
+          checkedSats.forEach((id) => {
+            result = prevProps.checkedSats.includes(id);
+            if (!result) { // Значит добавился
+              this.setPoligon();
+            }
+          });
+          prevProps.checkedSats.forEach((id) => {
+            result = checkedSats.includes(id);
+            if (!result) { // Значит убавился
+              this.removePoligon();
+            }
+          });
+        }
       }
     }
   }
@@ -121,27 +146,45 @@ class GoogleMap extends React.Component {
   }
 
 
-  setActiveSatellite() {
+  setActiveSat() {
     // Маркер спутника
-    this._markerSatellite = new window.google.maps.Marker({
+    this._markerSat = new window.google.maps.Marker({
       map: this._map,
       position: this.props.activeSatellite.coords,
       draggable: false,
       animation: window.google.maps.Animation.DROP,
       icon: `./img/satellite30.png`,
     });
-    this._markerSatellite.setMap(this._map);
+    this._markerSat.setMap(this._map);
   }
 
-  removeActiveSatellite() {
-    if (this._markerSatellite) {
-      this._markerSatellite.setMap(null);
-      this._markerSatellite = null;
+  removeActiveSat() {
+    if (this._markerSat) {
+      this._markerSat.setMap(null);
+      this._markerSat = null;
     }
+  }
+
+  setPoligon() {
+    this._SatBeam1 = new window.google.maps.Polygon({
+      paths: SATELLITES[0].beams[0],
+      strokeColor: `#01a01b`,
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: `#01a01b`,
+      fillOpacity: 0.35
+    });
+    this._SatBeam1.setMap(this._map);
+    this._SatBeam1.addListener(`click`, this.removePoligon);
+  }
+
+  removePoligon() {
+    this._SatBeam1.setMap(null);
   }
 
 
   render() {
+
     return (
       <div id="map" style={{width: `960px`, height: 500 + `px`}}/>
     );
@@ -152,11 +195,13 @@ GoogleMap.propTypes = {
   activePointerCoords: pt.shape(coordsType).isRequired,
   activeSatellite: pt.shape(satType).isRequired,
   setActivePointerCoords: pt.func.isRequired,
+  checkedSats: pt.arrayOf(pt.string),
 };
 
 const mapStateToProps = (state) => ({
   activePointerCoords: getActivePointerCoords(state),
   activeSatellite: getActiveSatellite(state),
+  checkedSats: getCheckedSats(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

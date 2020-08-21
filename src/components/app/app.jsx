@@ -1,5 +1,5 @@
 import React from 'react';
-import {Router, Route, Switch} from 'react-router-dom';
+import {Router, Route, Switch, Redirect} from 'react-router-dom';
 // import {connect} from 'react-redux';
 import {history} from '../../history.js';
 
@@ -45,7 +45,7 @@ const App = () => {
               return <FavoritesEmpty />;
             }}
           />
-
+ */}
           <Route
             render={() => (
               <>
@@ -54,10 +54,10 @@ const App = () => {
                   <br />
                   <small>Page not found</small>
                 </h1>
-                <Redirect to={AppRoute.MAIN} />
+                <Redirect to="/" />
               </>
             )}
-          /> */}
+          />
 
         </Switch>
       </Router>

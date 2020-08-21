@@ -13,6 +13,9 @@ export const getActiveSatellite = (state) => {
   return state[NAME_SPACE].activeSatellite;
 };
 
+export const getCheckedSats = (state) => {
+  return state[NAME_SPACE].checkedSats;
+};
 
 // export const getIdFromMatch = (_, props) => {
 //   if (props.match.params.id) {

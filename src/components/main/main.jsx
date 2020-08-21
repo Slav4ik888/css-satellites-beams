@@ -6,6 +6,7 @@ import FormPlaceSetup from '../form-place-setup/form-place-setup';
 import GoogleMap from '../google-map/google-map';
 import Footer from '../footer/footer';
 
+
 const Main = () => {
   return (
     <div className="container">
