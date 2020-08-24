@@ -12,10 +12,7 @@ import Footer from '../footer/footer';
 
 const Main = ({edit = false}) => {
   const [coords, setCoords] = useState([]);
-  const handleSetCoord = (crds) => {
-    console.log('coords: ', crds);
-    setCoords(crds);
-  };
+  const handleSetCoord = (crds) => setCoords(crds);
 
   if (edit) {
     return (

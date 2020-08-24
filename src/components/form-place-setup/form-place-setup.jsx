@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import {connect} from 'react-redux';
 import pt from 'prop-types';
 import {coordsType} from '../../utils/prop-types-templates';
@@ -12,8 +12,8 @@ const FormPlaceSetup = ({activePointerCoords, setActivePointerCoords}) => {
   const latRef = useRef(null);
   const lngRef = useRef(null);
 
-  const [latInput, setLatInput] = useState(activePointerCoords.lat);
-  const [lngInput, setLngInput] = useState(activePointerCoords.lng);
+  const [latInput] = useState(activePointerCoords.lat);
+  const [lngInput] = useState(activePointerCoords.lng);
   // useEffect(() => {
   //   document.title = `Вы нажали ${count} раз`;
   // }, [count]);

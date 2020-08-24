@@ -1,9 +1,8 @@
 import React from 'react';
-// import pt from 'prop-types';
-// import {coordsType} from '../../utils/prop-types-templates';
+import pt from 'prop-types';
+import {coordsType} from '../../utils/prop-types-templates';
 
-import {MAP_CENTER, MAP_ZOOM_START, MAP_TYPE_ID, MAP_MARKER_MAIN_POSITION} from '../../utils/const';
-import {removeNumAfterComma} from '../../utils/utils';
+import {MAP_CENTER, MAP_TYPE_ID, MAP_MARKER_MAIN_POSITION} from '../../utils/const';
 
 
 class GoogleMapEditBeam extends React.Component {
@@ -34,7 +33,7 @@ class GoogleMapEditBeam extends React.Component {
     document.getElementsByTagName(`head`)[0].appendChild(script);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     if (this.state.mapIsReady) {
       if (!this._map) { // Первичная прорисовка
         // Display the map
@@ -101,7 +100,6 @@ class GoogleMapEditBeam extends React.Component {
         break;
 
       case 13:
-        console.log(`Enter`, this._poligon);
         this.props.callback(this._poligon);
         break;
       default: return null;
@@ -145,7 +143,8 @@ class GoogleMapEditBeam extends React.Component {
 }
 
 GoogleMapEditBeam.propTypes = {
-
+  activePointerCoords: pt.shape(coordsType).isRequired,
+  callback: pt.func.isRequired,
 };
 
 
