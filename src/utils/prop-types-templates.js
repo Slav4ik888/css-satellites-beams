@@ -1,4 +1,5 @@
 import pt, {arrayOf} from 'prop-types';
+import {rangeType} from './const';
 
 
 export const coordsType = {
@@ -8,8 +9,12 @@ export const coordsType = {
 export const satType = {
   id: pt.string.isRequired,
   name: pt.string.isRequired,
-  coords: coordsType.isRequired,
+  range: pt.oneOf([rangeType.KA, rangeType.KU]).isRequired,
+  coordsSat: pt.shape(coordsType).isRequired,
+  coordsBeam: pt.shape(coordsType).isRequired,
+  beams: pt.object.isRequired,
 };
+
 
 export const offerPropTypes = {
   id: pt.number.isRequired,

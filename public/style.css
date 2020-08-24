@@ -243,8 +243,14 @@ form {
 }
 
 
+.view-cover {
+  width: 960px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  background-color: #eeeded;
+}
 
-.textarea {
+.view-container {
   display: flex;
   align-items: left;
   flex-direction: column;

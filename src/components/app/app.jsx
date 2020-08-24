@@ -22,6 +22,9 @@ const App = () => {
         <Switch>
 
           <Route exact path="/" component={Main}/>
+          <Route exact path="/edit">
+            <Main edit />
+          </Route>
 
           {/* <Route exact path={AppRoute.SIGN_IN}
             render={() => {

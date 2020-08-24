@@ -1,11 +1,11 @@
 import {extend} from '../../utils/utils.js';
-import {SATELLITES} from '../../utils/const';
+// import {SATELLITES} from '../../utils/const';
 
 
 const initialState = {
   activePointerCoords: {lat: 53.59778, lng: 103.29639}, // Координаты курсора
-  activeSatellite: SATELLITES[0], // Активный спутник, из которого светит луч
-  checkedSats: [`1`, `3`], // Список id выбранных спутников
+  activeSatellite: `1`, // Активный спутник, из которого светит луч
+  checkedSats: [`1`], // Список id выбранных спутников
 };
 
 const ActionType = {

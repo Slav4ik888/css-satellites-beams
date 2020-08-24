@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import pt from 'prop-types';
 import {coordsType} from '../../utils/prop-types-templates';
@@ -14,7 +14,9 @@ const FormPlaceSetup = ({activePointerCoords, setActivePointerCoords}) => {
 
   const [latInput, setLatInput] = useState(activePointerCoords.lat);
   const [lngInput, setLngInput] = useState(activePointerCoords.lng);
-
+  // useEffect(() => {
+  //   document.title = `Вы нажали ${count} раз`;
+  // }, [count]);
 
   const handleSubmit = (e) => {
     if (e) {
@@ -24,29 +26,33 @@ const FormPlaceSetup = ({activePointerCoords, setActivePointerCoords}) => {
     const lng = +lngRef.current.value;
 
     if (latInput && lngInput) {
-      setLatInput(lat);
-      setLngInput(lng);
+      // setLatInput(lat);
+      // setLngInput(lng);
       setActivePointerCoords({lat, lng});
     }
   };
 
   const handleChangeLat = (e) => {
-    setLatInput(e.target.value);
+    latRef.current.value = e.target.value;
+    // setLatInput(e.target.value);
   };
   const handleChangeLng = (e) => {
-    setLngInput(e.target.value);
+    lngRef.current.value = e.target.value;
+    // setLngInput(e.target.value);
   };
 
-  // let lastActiveCoords;
-  // if (lastActiveCoords !== activePointerCoords) { // Изменение пришло из вне
-  //   if (latInput !== activePointerCoords.lat || lngInput !== activePointerCoords.lng) {
-  //     setLatInput(activePointerCoords.lat);
-  //     setLngInput(activePointerCoords.lng);
-  //     lastActiveCoords = activePointerCoords;
-  //   }
-  // } else { // изменили input
+  let lastActiveCoords;
+  if (lastActiveCoords !== activePointerCoords) { // Изменение пришло из вне
+    if (latInput !== activePointerCoords.lat || lngInput !== activePointerCoords.lng) {
+      // setLatInput(activePointerCoords.lat);
+      // setLngInput(activePointerCoords.lng);
+      latRef.current.value = +activePointerCoords.lat;
+      lngRef.current.value = +activePointerCoords.lng;
+      lastActiveCoords = activePointerCoords;
+    }
+  } else { // изменили input
 
-  // }
+  }
 
   const handleFocus = () => document.addEventListener(`keydown`, handleKeyPressed);
   const handleBlur = () => document.removeEventListener(`keydown`, handleKeyPressed);
@@ -59,9 +65,13 @@ const FormPlaceSetup = ({activePointerCoords, setActivePointerCoords}) => {
         handleSubmit();
         latRef.current.blur();
         lngRef.current.blur();
+        document.removeEventListener(`keydown`, handleKeyPressed);
         break;
       case 13:
         handleSubmit();
+        latRef.current.blur();
+        lngRef.current.blur();
+        document.removeEventListener(`keydown`, handleKeyPressed);
         break;
       default: return null;
     }
@@ -84,14 +94,14 @@ const FormPlaceSetup = ({activePointerCoords, setActivePointerCoords}) => {
 
             <div className="inputs-container">
               <input type="number" className="input-coord"
-                value={latInput}
+                defaultValue={+activePointerCoords.lat}
                 onChange={handleChangeLat}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 ref={latRef}
               />
               <input type="number" className="input-coord"
-                value={lngInput}
+                defaultValue={+activePointerCoords.lng}
                 onChange={handleChangeLng}
                 onFocus={handleFocus}
                 onBlur={handleBlur}

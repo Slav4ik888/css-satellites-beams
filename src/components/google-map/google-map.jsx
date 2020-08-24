@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import pt from 'prop-types';
-import {coordsType, satType} from '../../utils/prop-types-templates';
+import {coordsType} from '../../utils/prop-types-templates';
 
 import {MAP_CENTER, MAP_ZOOM_START, MAP_TYPE_ID, MAP_MARKER_MAIN_POSITION} from '../../utils/const';
 import {getActivePointerCoords, getActiveSatellite, getCheckedSats} from '../../reducers/search/selectors';
@@ -67,7 +67,7 @@ class GoogleMap extends React.Component {
         });
         this._markerMain.setMap(this._map);
         this._markerMain.addListener(`dragend`, this.setPointerCoordToReducer);
-        // Выводим луч
+        // Выводим луч и спутник
         this.setActiveBeam();
         this.setActiveSat();
 
@@ -77,19 +77,22 @@ class GoogleMap extends React.Component {
         this.setMarkerMain();
         this.removeActiveBeam();
         this.setActiveBeam();
+        this.removeActiveSat();
+        this.setActiveSat();
 
         // Если нажали на спутник
-        if (this.props.checkedSats !== prevProps.checkedSats) {
-          let checkedSats = this.props.checkedSats;
+        const checkedSats = this.props.checkedSats;
+        const prevCheckedSats = prevProps.checkedSats;
+        if (checkedSats !== prevCheckedSats) {
           // Перебираем новый и проверяем добавился или убавился
           let result;
           checkedSats.forEach((id) => {
-            result = prevProps.checkedSats.includes(id);
+            result = prevCheckedSats.includes(id);
             if (!result) { // Значит добавился
               this.setPoligon();
             }
           });
-          prevProps.checkedSats.forEach((id) => {
+          prevCheckedSats.forEach((id) => {
             result = checkedSats.includes(id);
             if (!result) { // Значит убавился
               this.removePoligon();
@@ -128,8 +131,9 @@ class GoogleMap extends React.Component {
   }
 
   setActiveBeam() {
+    const coords = SATELLITES[SATELLITES.findIndex((it) => it.id === this.props.activeSatellite)].coordsBeam;
     this._activeBeam = new window.google.maps.Polyline({
-      path: [this.props.activeSatellite.coords, this.props.activePointerCoords],
+      path: [coords, this.props.activePointerCoords],
       geodesic: true,
       strokeColor: `#019601`,
       strokeOpacity: 1.0,
@@ -147,12 +151,13 @@ class GoogleMap extends React.Component {
 
 
   setActiveSat() {
+    const coords = SATELLITES[SATELLITES.findIndex((it) => it.id === this.props.activeSatellite)].coordsSat;
     // Маркер спутника
     this._markerSat = new window.google.maps.Marker({
       map: this._map,
-      position: this.props.activeSatellite.coords,
+      position: coords,
       draggable: false,
-      animation: window.google.maps.Animation.DROP,
+      // animation: window.google.maps.Animation.DROP,
       icon: `./img/satellite30.png`,
     });
     this._markerSat.setMap(this._map);
@@ -167,7 +172,7 @@ class GoogleMap extends React.Component {
 
   setPoligon() {
     this._SatBeam1 = new window.google.maps.Polygon({
-      paths: SATELLITES[0].beams[0],
+      paths: SATELLITES[0].beams.beam1,
       strokeColor: `#01a01b`,
       strokeOpacity: 0.8,
       strokeWeight: 2,
@@ -179,7 +184,9 @@ class GoogleMap extends React.Component {
   }
 
   removePoligon() {
-    this._SatBeam1.setMap(null);
+    if (this._SatBeam1) {
+      this._SatBeam1.setMap(null);
+    }
   }
 
 
@@ -193,7 +200,7 @@ class GoogleMap extends React.Component {
 
 GoogleMap.propTypes = {
   activePointerCoords: pt.shape(coordsType).isRequired,
-  activeSatellite: pt.shape(satType).isRequired,
+  activeSatellite: pt.string.isRequired,
   setActivePointerCoords: pt.func.isRequired,
   checkedSats: pt.arrayOf(pt.string),
 };
