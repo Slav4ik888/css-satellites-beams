@@ -14,8 +14,8 @@ class GoogleMap extends React.Component {
   constructor(props) {
     super(props);
     this.setPointerCoordToReducer = this.setPointerCoordToReducer.bind(this);
-    this.setMarkerMain = this.setMarkerMain.bind(this);
-    this.removeMarkerMain = this.removeMarkerMain.bind(this);
+    this.setActiveMarker = this.setActiveMarker.bind(this);
+    this.removeActiveMarker = this.removeActiveMarker.bind(this);
     this.setActiveBeam = this.setActiveBeam.bind(this);
     this.removeActiveBeam = this.removeActiveBeam.bind(this);
     this.setActiveSat = this.setActiveSat.bind(this);
@@ -78,8 +78,8 @@ class GoogleMap extends React.Component {
 
       } else { // Все последующие update
         // Удаляем старый луч и рисуем новый
-        this.removeMarkerMain();
-        this.setMarkerMain();
+        this.removeActiveMarker();
+        this.setActiveMarker();
         this.removeActiveBeam();
         this.setActiveBeam();
         this.removeActiveSat();
@@ -122,7 +122,7 @@ class GoogleMap extends React.Component {
   }
 
 
-  setMarkerMain() {
+  setActiveMarker() {
     this._activeMarker = new window.google.maps.Marker({
       map: this._map,
       position: this.props.activePointerCoords,
@@ -134,7 +134,7 @@ class GoogleMap extends React.Component {
     this._activeMarker.addListener(`dragend`, this.setPointerCoordToReducer);
   }
 
-  removeMarkerMain() {
+  removeActiveMarker() {
     this._activeMarker.setMap(null);
     this._activeMarker = null;
     // this._activeMarker.removeListener(`dragend`, this.setPointerCoordToReducer);

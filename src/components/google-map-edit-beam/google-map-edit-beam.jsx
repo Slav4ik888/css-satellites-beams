@@ -38,8 +38,8 @@ class GoogleMapEditBeam extends React.Component {
       if (!this._map) { // Первичная прорисовка
         // Display the map
         this._map = new window.google.maps.Map(document.getElementById(`map`), {
-          center: MAP_CENTER,
-          zoom: 3,
+          center: {lat: 53.546, lng: 56.286},
+          zoom: 6,
           mapTypeId: MAP_TYPE_ID,
         });
 
@@ -58,13 +58,21 @@ class GoogleMapEditBeam extends React.Component {
         // Выводим маркер
         this._markerMain = new window.google.maps.Marker({
           map: this._map,
-          position: MAP_MARKER_MAIN_POSITION,
+          position: {lat: 53.546, lng: 56.286},
           draggable: true,
           animation: window.google.maps.Animation.DROP,
           // icon: image,
         });
         this._markerMain.setMap(this._map);
         this._markerMain.addListener(`dragend`, this.addLatLng);
+
+        // const img = document.createElement(`img`);
+        // img.src = `/img/img_map.png`;
+        // img.style.position = `absolute`;
+        // img.style.opacity = 0.4;
+        // img.style.width = `520px`;
+        // img.style.top = `100px`;
+        // document.getElementById(`map`).insertAdjacentElement(`beforeend`, img);
 
       } else { // Все последующие update
         // Удаляем старый луч и рисуем новый
