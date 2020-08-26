@@ -143,7 +143,6 @@ class GoogleMapEditBeam extends React.Component {
 }
 
 GoogleMapEditBeam.propTypes = {
-  activePointerCoords: pt.shape(coordsType).isRequired,
   callback: pt.func.isRequired,
 };
 

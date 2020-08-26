@@ -4,13 +4,13 @@ import {extend} from '../../utils/utils.js';
 
 const initialState = {
   activePointerCoords: {lat: 53.59778, lng: 103.29639}, // Координаты курсора
-  activeSatellite: `1`, // Активный спутник, из которого светит луч
+  activeSatId: `1`, // Активный спутник, из которого светит луч
   checkedSats: [`1`], // Список id выбранных спутников
 };
 
 const ActionType = {
   SET_ACTIVE_POINTER_COORDS: `SET_ACTIVE_POINTER_COORDS`,
-  SET_ACTIVE_SATELLITE: `SET_ACTIVE_SATELLITE`,
+  SET_ACTIVE_SAT_ID: `SET_ACTIVE_SAT_ID`,
   SET_CHECKED_SAT: `SET_CHECKED_SAT`,
   REMOVE_CHECKED_SAT: `REMOVE_CHECKED_SAT`,
 };
@@ -20,8 +20,8 @@ const ActionCreator = {
     type: ActionType.SET_ACTIVE_POINTER_COORDS,
     payload: activeCoords,
   }),
-  setActiveSatellite: (numOfSatellite) => ({
-    type: ActionType.SET_ACTIVE_SATELLITE,
+  setActiveSatId: (numOfSatellite) => ({
+    type: ActionType.SET_ACTIVE_SAT_ID,
     payload: numOfSatellite,
   }),
   setCheckedSats: (idSat) => ({
@@ -41,9 +41,9 @@ const reducer = (state = initialState, action) => {
         activePointerCoords: action.payload,
       });
 
-    case ActionType.SET_ACTIVE_SATELLITE:
+    case ActionType.SET_ACTIVE_SAT_ID:
       return extend(state, {
-        activeSatellite: action.payload,
+        activeSatId: action.payload,
       });
 
     case ActionType.SET_CHECKED_SAT:

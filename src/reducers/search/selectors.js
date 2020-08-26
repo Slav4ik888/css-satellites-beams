@@ -9,8 +9,8 @@ export const getActivePointerCoords = (state) => {
   return state[NAME_SPACE].activePointerCoords;
 };
 
-export const getActiveSatellite = (state) => {
-  return state[NAME_SPACE].activeSatellite;
+export const getActiveSatId = (state) => {
+  return state[NAME_SPACE].activeSatId;
 };
 
 export const getCheckedSats = (state) => {
