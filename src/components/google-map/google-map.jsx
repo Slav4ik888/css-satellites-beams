@@ -42,7 +42,6 @@ class GoogleMap extends React.Component {
     this._poligonsSats = []; // Выведенные полигоны на карту
     this._allPoligonsSats = []; // Все полигоны, данные по которым у нас есть
     this._prevActiveSatId = null; // Id последнего активного спутника
-    // this._SatBeam1 = null;
 
     this.state = {
       mapIsReady: false,
@@ -96,37 +95,46 @@ class GoogleMap extends React.Component {
         this.setAllPoligonsToAllPoligonsSats(SATELLITES);
 
       } else { // Все последующие update
-        // Удаляем старый луч и рисуем новый
-        this.removeActiveMarker();
-        this.setActiveMarker();
-        this.removeActiveBeam();
-        this.setActiveBeam();
-        this.removeActiveSat();
-        this.setActiveSat();
-
+        if (prevProps.activePointerCoords !== this.props.activePointerCoords) {
+          // Если было зменение координат маркера
+          // Удаляем старый луч и рисуем новый
+          this.removeActiveMarker();
+          this.setActiveMarker();
+          this.removeActiveBeam();
+          this.setActiveBeam();
+          this.removeActiveSat();
+          this.setActiveSat();
+        } else {
+          // Не было изменений координат маркера
+        }
         // Если нажали на спутник
         const checkedSats = this.props.checkedSats;
         const prevCheckedSats = prevProps.checkedSats;
+        const activeSatId = this.props.activeSatId;
+        const prevActiveSatId = this._prevActiveSatId;
+
         if (checkedSats !== prevCheckedSats) {
           // Перебираем новый и проверяем добавился или убавился
           let result;
           checkedSats.forEach((id) => {
             result = prevCheckedSats.includes(id);
             if (!result) { // Значит добавился
-              if (this._prevActiveSatId) { // Если есть активный спутник
-                this.removeAllPoligonsSat(this._prevActiveSatId);
+              if (prevActiveSatId) { // Если есть активный спутник
+                this.removeAllPoligonsSat(prevActiveSatId);
               }
-              this.setAllPoligonsSat(this.props.activeSatId);
-              this._prevActiveSatId = this.props.activeSatId;
+              this.setAllPoligonsSat(activeSatId);
+              this._prevActiveSatId = activeSatId;
             }
           });
           prevCheckedSats.forEach((id) => {
             result = checkedSats.includes(id);
             if (!result) { // Значит убавился
-              this.removeAllPoligonsSat(this._prevActiveSatId);
+              this.removeAllPoligonsSat(prevActiveSatId);
               this._prevActiveSatId = null;
             }
           });
+          // Проверяем и выводим лучи выбранного/отменённого спутника
+          this.setTargetPoligons(this.getTargetPoligons(this._activeMarker.position, this._allPoligonsSats));
         }
       }
     }
