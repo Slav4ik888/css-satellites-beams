@@ -11,22 +11,27 @@ export const extend = (a, b) => {
 };
 
 
-/**
- * Возвращает число с Х знаками после запятой
- * @param {Number} number
- * @param {Number} x
- *
- * @return {Number}
- */
+// function throttle(func, timePause, obj) {
+//   return function (args) {
+//     let previousCall = obj.lastCall;
+//     obj.lastCall = Date.now();
+//     if (previousCall === undefined // function is being called for the first time
+//     // eslint-disable-next-line no-invalid-this
+//         || (this.lastCall - previousCall) > timePause) { // throttle time has elapsed
+//       func(args);
+//     }
+//   };
+// }
 
-export const removeNumAfterComma = (number, x) => {
-  let result = number;
-  if (typeof result === `number`) {
-    console.log(`Число`);
-    
+// let logger = (args) => console.log(`My args are ${args}`);
+// // throttle: call the logger at most once every two seconds
+// let o = {};
+// let throttledLogger = throttle(logger, 2000, o);
 
-  } else {
-    console.log(`Не число`);
-  }
-  return result;
-};
+// throttledLogger([1, 2, 3]);
+// throttledLogger([1, 2, 3]);
+// throttledLogger([1, 2, 3]);
+// throttledLogger([1, 2, 3]);
+// throttledLogger([1, 2, 3]);
+
+// // "My args are 1, 2, 3" - logged only once

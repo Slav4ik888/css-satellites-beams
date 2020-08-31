@@ -5,7 +5,7 @@ import {extend} from '../../utils/utils.js';
 const initialState = {
   activePointerCoords: {lat: 53.59778, lng: 103.29639}, // Координаты курсора
   activeSatId: `1`, // Активный спутник, из которого светит луч
-  checkedSats: [], // Список id выбранных спутников
+  checkedSats: [`1`], // Список id выбранных спутников
 };
 
 const ActionType = {

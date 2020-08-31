@@ -8,6 +8,7 @@ import {getActivePointerCoords, getActiveSatId, getCheckedSats} from '../../redu
 import {ActionCreator} from '../../reducers/search/search';
 
 import {SATELLITES} from '../../utils/const';
+import {geocodeAddress} from '../../utils/geocode';
 
 
 class GoogleMap extends React.Component {
@@ -70,6 +71,7 @@ class GoogleMap extends React.Component {
           zoom: MAP_ZOOM_START,
           mapTypeId: MAP_TYPE_ID,
         });
+
         // Выводим маркер
         this._activeMarker = new window.google.maps.Marker({
           map: this._map,
@@ -93,6 +95,14 @@ class GoogleMap extends React.Component {
 
         // Сохраняем все полигоны
         this.setAllPoligonsToAllPoligonsSats(SATELLITES);
+
+        // Инициализируем Геокодер
+        const geocoder = new window.google.maps.Geocoder();
+        document.querySelector(`.input-button`).addEventListener(`click`, () => {
+          geocodeAddress(geocoder, (coords) => {
+            this.props.setActivePointerCoords({lat: coords.lat(), lng: coords.lng()});
+          });
+        });
 
       } else { // Все последующие update
         if (prevProps.activePointerCoords !== this.props.activePointerCoords) {
@@ -133,8 +143,8 @@ class GoogleMap extends React.Component {
               this._prevActiveSatId = null;
             }
           });
-          // Проверяем и выводим лучи выбранного/отменённого спутника
-          this.setTargetPoligons(this.getTargetPoligons(this._activeMarker.position, this._allPoligonsSats));
+          // Проверяем и сразу же выводим лучи выбранного/отменённого спутника
+          // this.setTargetPoligons(this.getTargetPoligons(this._activeMarker.position, this._allPoligonsSats));
         }
       }
     }
@@ -215,7 +225,6 @@ class GoogleMap extends React.Component {
   // satPoligon.addListener(`mouseout`, () => {
   //   satPoligon.setOptions({fillColor: `#01a01b`});
   // });
-
 
   setActiveMarker() {
     this._activeMarker = new window.google.maps.Marker({
