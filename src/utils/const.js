@@ -5,8 +5,10 @@ export const MAP_ZOOM_START = 2;
 export const MAP_TYPE = {
   ROAD_MAP: `roadmap`,
   TERRAIN_MAP: `terrain`,
+  HYBRID: `hybrid`,
+  SATELLITE: `satellite`,
 };
-export const MAP_TYPE_ID = MAP_TYPE.TERRAIN_MAP;
+export const MAP_TYPE_ID = MAP_TYPE.ROAD_MAP;
 
 export const MAP_MARKER_MAIN_POSITION = {lat: 53.59778, lng: 103.29639};
 

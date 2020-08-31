@@ -24,6 +24,8 @@ class GoogleMap extends React.Component {
     this.removeAllPoligons = this.removeAllPoligons.bind(this);
     this.setPoligon = this.setPoligon.bind(this);
     this.removePoligon = this.removePoligon.bind(this);
+    this.getTargetPoligons = this.getTargetPoligons.bind(this);
+    this.setTargetPoligons = this.setTargetPoligons.bind(this);
 
     this._map = null;
     this._activeMarker = null; // Активный маркер на карте
@@ -69,7 +71,12 @@ class GoogleMap extends React.Component {
           // icon: image,
         });
         this._activeMarker.setMap(this._map);
-        this._activeMarker.addListener(`dragend`, this.setPointerCoordToReducer);
+        this._activeMarker.addListener(`dragend`, (event) => {
+          // console.log(event.latLng.lat().toFixed(3) + `:` + event.latLng.lng().toFixed(3));
+          this.setPointerCoordToReducer(event);
+          return null;
+        });
+
         // Выводим луч и спутник и все лучи этого спутника
         this.setActiveBeam();
         this.setActiveSat();
@@ -118,8 +125,39 @@ class GoogleMap extends React.Component {
   setPointerCoordToReducer(event) {
     // eslint-disable-next-line no-console
     console.log(`Координаты точки: `, event.latLng.lat() + `:` + event.latLng.lng());
+    // const result = window.google.maps.geometry.poly.containsLocation(event.latLng, this._poligonsSats[0].poligon);
+    // console.log('result: ', result);
+    const poligons = this._poligonsSats;
+    this.getTargetPoligons(event.latLng, poligons);
+    console.log(`TargetPoligons: `, this.getTargetPoligons(event.latLng));
+    this.setTargetPoligons();
+
     this.props.setActivePointerCoords({lat: event.latLng.lat(), lng: event.latLng.lng()});
   }
+
+  // Возвращает массив полигонов которые находятся в указанных кординатах
+  getTargetPoligons(point, poligons) {
+    console.log('poligons: ', poligons);
+    let arr = [];
+    if (poligons) {
+      poligons.forEach((poligon) => window.google.maps.geometry.poly.containsLocation(point, poligon.poligon) ? arr.push(poligon) : null);
+    }
+    return arr;
+  }
+
+  // Выводит только те полигоны, в которые попадает маркер
+  setTargetPoligons() {
+    console.log(`setTargetPoligons`);
+    this.removeAllPoligons(this._prevActiveSatId);
+    // this.removeAllPoligons(this.props.activeSatId);
+  }
+  // satPoligon.addListener(`click`, () => {
+  //   // console.log('satPoligon: ', satPoligon);
+  //   satPoligon.setOptions({fillColor: `#03dd27`});
+  // });
+  // satPoligon.addListener(`mouseout`, () => {
+  //   satPoligon.setOptions({fillColor: `#01a01b`});
+  // });
 
 
   setActiveMarker() {
@@ -214,11 +252,28 @@ class GoogleMap extends React.Component {
         paths: SATELLITES[satIdx].beams[beam],
         strokeColor: `#01a01b`,
         strokeOpacity: 0.8,
-        strokeWeight: 3,
+        strokeWeight: 2.5,
         fillColor: `#01a01b`,
         fillOpacity: 0.35
       });
       satPoligon.setMap(this._map);
+
+      // satPoligon.addListener(`mousemove`, () => {
+      //   // console.log('satPoligon: ', satPoligon);
+      //   satPoligon.setOptions({fillColor: `#03dd27`});
+      // });
+      // satPoligon.addListener(`mouseout`, () => {
+      //   satPoligon.setOptions({fillColor: `#01a01b`});
+      // });
+
+      satPoligon.addListener(`click`, () => {
+        // console.log('satPoligon: ', satPoligon);
+        satPoligon.setOptions({fillColor: `#03dd27`});
+      });
+      satPoligon.addListener(`mouseout`, () => {
+        satPoligon.setOptions({fillColor: `#01a01b`});
+      });
+
       const obj = {
         poligon: satPoligon,
         satId,
@@ -233,7 +288,9 @@ class GoogleMap extends React.Component {
   // Убираем с карты полигон
   removePoligon(beam) {
     const poligonIdx = this._poligonsSats.findIndex((obj) => obj.beam === beam);
-    this._poligonsSats[poligonIdx].poligon.setMap(null);
+    if (this._poligonsSats[poligonIdx]) {
+      this._poligonsSats[poligonIdx].poligon.setMap(null);
+    }
     this._poligonsSats = [...this._poligonsSats.slice(0, poligonIdx), ...this._poligonsSats.slice(poligonIdx + 1)];
   }
 

@@ -1,14 +1,16 @@
-import React, {useState, useRef} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import pt from 'prop-types';
-import {coordsType, satType} from '../../utils/prop-types-templates';
+// import {coordsType, satType} from '../../utils/prop-types-templates';
 
-import {getCheckedSats, getActiveSatId} from '../../reducers/search/selectors';
+import {// getActiveSatId
+  getCheckedSats} from '../../reducers/search/selectors';
 import {ActionCreator} from '../../reducers/search/search';
 import {SATELLITES} from '../../utils/const';
 
 
-const SatList = ({activeSatId, setActiveSatId, checkedSats, setCheckedSats, removeCheckedSats}) => {
+const SatList = ({// activeSatId,
+  setActiveSatId, checkedSats, setCheckedSats, removeCheckedSats}) => {
 
   const handleToggleCheckedSats = (e, id) => {
     const value = e.target.checked;
@@ -36,7 +38,7 @@ const SatList = ({activeSatId, setActiveSatId, checkedSats, setCheckedSats, remo
 };
 
 SatList.propTypes = {
-  activeSatId: pt.string.isRequired,
+  // activeSatId: pt.string.isRequired,
   checkedSats: pt.arrayOf(pt.string),
   setCheckedSats: pt.func.isRequired,
   removeCheckedSats: pt.func.isRequired,
@@ -44,7 +46,7 @@ SatList.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  activeSatId: getActiveSatId(state),
+  // activeSatId: getActiveSatId(state),
   checkedSats: getCheckedSats(state),
 });
 

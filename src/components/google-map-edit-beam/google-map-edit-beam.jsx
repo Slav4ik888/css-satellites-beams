@@ -1,9 +1,12 @@
 import React from 'react';
 import pt from 'prop-types';
-import {coordsType} from '../../utils/prop-types-templates';
+// import {coordsType} from '../../utils/prop-types-templates';
 
-import {MAP_CENTER, MAP_TYPE_ID, MAP_MARKER_MAIN_POSITION} from '../../utils/const';
+import {// MAP_CENTER, MAP_MARKER_MAIN_POSITION,
+  MAP_TYPE_ID} from '../../utils/const';
 
+// Начальная точка
+const activePointerCoords = {lat: 53.546, lng: 56.286};
 
 class GoogleMapEditBeam extends React.Component {
   constructor(props) {
@@ -38,7 +41,7 @@ class GoogleMapEditBeam extends React.Component {
       if (!this._map) { // Первичная прорисовка
         // Display the map
         this._map = new window.google.maps.Map(document.getElementById(`map`), {
-          center: {lat: 53.546, lng: 56.286},
+          center: activePointerCoords,
           zoom: 6,
           mapTypeId: MAP_TYPE_ID,
         });
@@ -50,15 +53,13 @@ class GoogleMapEditBeam extends React.Component {
           strokeWeight: 2
         });
         this._poly.setMap(this._map);
-
-        // Add a listener for the click event
-        // this._map.addListener(`click`, this.addLatLng);
+        this._poly.setEditable(true); // Редактировать
 
         document.addEventListener(`keydown`, this.handleKeyPressed);
         // Выводим маркер
         this._markerMain = new window.google.maps.Marker({
           map: this._map,
-          position: {lat: 53.546, lng: 56.286},
+          position: activePointerCoords,
           draggable: true,
           animation: window.google.maps.Animation.DROP,
           // icon: image,
@@ -66,13 +67,6 @@ class GoogleMapEditBeam extends React.Component {
         this._markerMain.setMap(this._map);
         this._markerMain.addListener(`dragend`, this.addLatLng);
 
-        // const img = document.createElement(`img`);
-        // img.src = `/img/img_map.png`;
-        // img.style.position = `absolute`;
-        // img.style.opacity = 0.4;
-        // img.style.width = `520px`;
-        // img.style.top = `100px`;
-        // document.getElementById(`map`).insertAdjacentElement(`beforeend`, img);
 
       } else { // Все последующие update
         // Удаляем старый луч и рисуем новый
@@ -126,7 +120,7 @@ class GoogleMapEditBeam extends React.Component {
   setMarkerMain() {
     this._markerMain = new window.google.maps.Marker({
       map: this._map,
-      position: this.props.activePointerCoords,
+      position: activePointerCoords,
       draggable: true,
       // animation: window.google.maps.Animation.DROP,
       // icon: image,
@@ -136,6 +130,7 @@ class GoogleMapEditBeam extends React.Component {
   }
 
   removeMarkerMain() {
+    this._markerMain.removeListener();
     this._markerMain.setMap(null);
     this._markerMain = null;
     // this._markerMain.removeListener(`dragend`, this.setPointerCoordToReducer);
