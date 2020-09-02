@@ -27,7 +27,7 @@ const Main = ({edit = false}) => {
         <Instruction />
         <FormPlaceSetup />
         <SatList />
-        <GoogleMap />
+        {/* <GoogleMap /> */}
         <Footer />
       </div>
     );
