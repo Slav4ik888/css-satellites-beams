@@ -24,11 +24,11 @@ const ActionCreator = {
     type: ActionType.SET_ACTIVE_SAT_ID,
     payload: numOfSatellite,
   }),
-  setCheckedSats: (idSat) => ({
+  setCheckedSat: (idSat) => ({
     type: ActionType.SET_CHECKED_SAT,
     payload: idSat,
   }),
-  removeCheckedSats: (idSat) => ({
+  removeCheckedSat: (idSat) => ({
     type: ActionType.REMOVE_CHECKED_SAT,
     payload: idSat,
   }),

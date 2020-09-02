@@ -10,15 +10,15 @@ import {SATELLITES} from '../../utils/const';
 
 
 const SatList = ({// activeSatId,
-  setActiveSatId, checkedSats, setCheckedSats, removeCheckedSats}) => {
+  setActiveSatId, checkedSats, setCheckedSat, removeCheckedSat}) => {
 
-  const handleToggleCheckedSats = (e, id) => {
+  const handleToggleCheckedSat = (e, id) => {
     const value = e.target.checked;
     if (value) {
-      setCheckedSats(id);
+      setCheckedSat(id);
       setActiveSatId(id);
     } else {
-      removeCheckedSats(id);
+      removeCheckedSat(id);
     }
   };
 
@@ -27,7 +27,7 @@ const SatList = ({// activeSatId,
       <div className="container">
         {SATELLITES.map((sat) => (<div key={sat.id} className="input-container">
           <input type="checkbox" className="sat-list-checkbox" id={sat.id}
-            onChange={(e) => handleToggleCheckedSats(e, sat.id)}
+            onChange={(e) => handleToggleCheckedSat(e, sat.id)}
             checked={checkedSats.includes(sat.id)}
           />
           <label className="sat-list-checkbox-label" htmlFor={sat.id}>{sat.name + ` (${sat.range})`}</label>
@@ -40,8 +40,8 @@ const SatList = ({// activeSatId,
 SatList.propTypes = {
   // activeSatId: pt.string.isRequired,
   checkedSats: pt.arrayOf(pt.string),
-  setCheckedSats: pt.func.isRequired,
-  removeCheckedSats: pt.func.isRequired,
+  setCheckedSat: pt.func.isRequired,
+  removeCheckedSat: pt.func.isRequired,
   setActiveSatId: pt.func.isRequired,
 };
 
@@ -54,11 +54,11 @@ const mapDispatchToProps = (dispatch) => ({
   setActivePointerCoords(coords) {
     dispatch(ActionCreator.setActivePointerCoords(coords));
   },
-  setCheckedSats(id) {
-    dispatch(ActionCreator.setCheckedSats(id));
+  setCheckedSat(id) {
+    dispatch(ActionCreator.setCheckedSat(id));
   },
-  removeCheckedSats(id) {
-    dispatch(ActionCreator.removeCheckedSats(id));
+  removeCheckedSat(id) {
+    dispatch(ActionCreator.removeCheckedSat(id));
   },
   setActiveSatId(id) {
     dispatch(ActionCreator.setActiveSatId(id));
