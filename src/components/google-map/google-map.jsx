@@ -9,6 +9,7 @@ import {ActionCreator} from '../../reducers/search/search';
 
 import {SATELLITES} from '../../utils/const';
 import {geocodeAddress} from '../../utils/geocode';
+import {getTargetPoligons} from '../../utils/poligons';
 
 
 class GoogleMap extends React.Component {
@@ -16,7 +17,6 @@ class GoogleMap extends React.Component {
     super(props);
     this.setAllPoligonsToAllPoligonsSats = this.setAllPoligonsToAllPoligonsSats.bind(this);
 
-    this.getTargetPoligons = this.getTargetPoligons.bind(this);
     this.setTargetPoligons = this.setTargetPoligons.bind(this);
 
     this.setActiveMarker = this.setActiveMarker.bind(this);
@@ -81,11 +81,7 @@ class GoogleMap extends React.Component {
           // icon: image,
         });
         this._activeMarker.setMap(this._map);
-        this._activeMarker.addListener(`dragend`, (event) => {
-          // console.log(event.latLng.lat().toFixed(3) + `:` + event.latLng.lng().toFixed(3));
-          this.setPointerCoordToReducer(event);
-          return null;
-        });
+        this._activeMarker.addListener(`dragend`, this.setPointerCoordToReducer);
 
         // Выводим луч и спутник и все лучи этого спутника
         this.setActiveBeam();
@@ -104,13 +100,15 @@ class GoogleMap extends React.Component {
             this.props.checkedSats.forEach((satId) => this.props.removeCheckedSat(satId));
             // Вывести только те полигоны которые попадают в координаты
             const poligons = this._allPoligonsSats;
-            const targetPoligons = this.getTargetPoligons(coords, poligons);
+            const targetPoligons = getTargetPoligons(coords, poligons);
             this.setTargetPoligons(targetPoligons);
             // Активируем спутники
             targetPoligons.forEach((sat) => this.props.setCheckedSat(sat.satId));
 
-            console.log('targetPoligons: ', targetPoligons);
-            console.log('state.poligonsSats: ', this.state.poligonsSats);
+            // eslint-disable-next-line no-console
+            console.log(`targetPoligons: `, targetPoligons);
+            // eslint-disable-next-line no-console
+            console.log(`state.poligonsSats: `, this.state.poligonsSats);
             this.props.setActivePointerCoords({lat: coords.lat(), lng: coords.lng()});
             // Установить первый активный спутник
             // this.props.setCheckedSat(targetPoligons[0].satId);
@@ -169,17 +167,16 @@ class GoogleMap extends React.Component {
   }
 
 
-  // Передаёт координаты выбранной точки в редюсер
+  // Обработка изменений координат activeMarker
   setPointerCoordToReducer(event) {
     const latLng = event.latLng;
     // eslint-disable-next-line no-console
     console.log(`Координаты точки: `, latLng.lat() + `:` + latLng.lng());
     // const result = window.google.maps.geometry.poly.containsLocation(latLng, this.state.poligonsSats[0].poligon);
     // console.log('result: ', result);
-    const poligons = this._allPoligonsSats;
-    const targetPoligons = this.getTargetPoligons(latLng, poligons);
-    this.setTargetPoligons(targetPoligons);
-    this.props.setActivePointerCoords({lat: latLng.lat(), lng: latLng.lng()});
+    const targetPoligons = getTargetPoligons(latLng, this._allPoligonsSats); // Возвращает массив полигонов которые находятся в указанных кординатах
+    this.setTargetPoligons(targetPoligons); // Выводит только те полигоны, в которые попадает маркер
+    this.props.setActivePointerCoords({lat: latLng.lat(), lng: latLng.lng()}); // В редьюсер
   }
 
   // Сохраняем все полигоны, чтобы потом можно было в них искать
@@ -209,14 +206,6 @@ class GoogleMap extends React.Component {
     // console.log(`TEST`, this._allPoligonsSats);
   }
 
-  // Возвращает массив полигонов которые находятся в указанных кординатах
-  getTargetPoligons(point, poligons) {
-    let arr = [];
-    if (poligons) {
-      poligons.forEach((poligon) => window.google.maps.geometry.poly.containsLocation(point, poligon.poligon) ? arr.push(poligon) : null);
-    }
-    return arr;
-  }
 
   // Выводит только те полигоны, в которые попадает маркер
   setTargetPoligons(poligons) {
