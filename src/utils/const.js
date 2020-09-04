@@ -1,5 +1,5 @@
 
-export const MAP_CENTER = {lat: 53.59778, lng: 103.29639};
+export const MAP_CENTER = {lat: 52.2854834, lng: 104.2890222};
 export const MAP_ZOOM_START = 2;
 
 export const MAP_TYPE = {
@@ -10,7 +10,7 @@ export const MAP_TYPE = {
 };
 export const MAP_TYPE_ID = MAP_TYPE.ROAD_MAP;
 
-export const MAP_MARKER_MAIN_POSITION = {lat: 53.59778, lng: 103.29639};
+export const MAP_MARKER_MAIN_POSITION = {lat: 52.2854834, lng: 104.2890222};
 
 export const rangeType = {
   KU: `Ku`,

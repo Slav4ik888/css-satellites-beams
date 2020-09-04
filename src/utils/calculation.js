@@ -9,11 +9,16 @@ export const calcAngleGuidance = (g1, g2, v) => {
       (Math.cos(getR(g2 - g1)) * Math.cos(getR(v)) - 0.151) /
       Math.sqrt(1 - Math.pow(Math.cos(getR(g2 - g1)), 2) * Math.pow(Math.cos(getR(v)), 2))
   ));
-  return result;
+  return result.toFixed(2);
 };
 
 // = 180° +- arctg{tg(g2 - g1)/sin(v)}
-export const calcAzimut = (g1, g2, v) => 180 + getG(Math.atan(Math.tan(getR(g2 - g1)) / Math.sin(getR(v))));
+export const calcAzimut = (g1, g2, v) => (180 + getG(Math.atan(Math.tan(getR(g2 - g1)) / Math.sin(getR(v))))).toFixed(2);
+
+// console.log('Солнечногорск: ', calcAngleGuidance(36, 37, 56.1851));
+// console.log('calcAngleGuidance: ', calcAngleGuidance(140, 104.3071, 52.2736));
+// console.log(`calcAzimut`, calcAzimut(140, 104.3071, 52.2736));
+
 
 // // 0.7853981633974483
 // console.log('Math.atan(0,4875): 26', Math.atan(0.4875));

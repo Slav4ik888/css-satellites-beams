@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import {connect} from 'react-redux';
 import pt from 'prop-types';
@@ -107,8 +106,6 @@ class GoogleMap extends React.Component {
             // targetPoligons.forEach((sat) => this.props.setCheckedSat(sat.satId));
             this.setTargetPoligons(coords);
 
-            // eslint-disable-next-line no-console
-            console.log(`state.poligonsSats: `, this.state.poligonsSats);
             this.props.setActivePointerCoords({lat: coords.lat(), lng: coords.lng()});
             // Установить первый активный спутник
             // this.props.setCheckedSat(targetPoligons[0].satId);
@@ -145,19 +142,24 @@ class GoogleMap extends React.Component {
           checkedSats.forEach((id) => {
             result = prevCheckedSats.includes(id);
             if (!result) { // Значит добавился
-              console.log(`добавился: `);
+              // console.log(`добавился: `);
               if (prevActiveSatId) { // Если есть активный спутник
                 this.removeAllPoligonsSat(prevActiveSatId);
               }
               this.removeAllActivePoligons();
               this.setAllPoligonsSat(activeSatId);
               this._prevActiveSatId = activeSatId;
+              // Активируем новый спутник
+              this.removeActiveBeam();
+              this.setActiveBeam();
+              this.removeActiveSat();
+              this.setActiveSat();
             }
           });
           prevCheckedSats.forEach((id) => {
             result = checkedSats.includes(id);
             if (!result) { // Значит убавился
-              console.log(`убавился: `);
+              // console.log(`убавился: `);
               // this.removeAllPoligonsSat(prevActiveSatId);
               this.removeAllActivePoligons();
               this._prevActiveSatId = null;
@@ -210,19 +212,14 @@ class GoogleMap extends React.Component {
 
   // Выводит только те полигоны, в которые попадает маркер по отмеченным спутникам
   setTargetPoligons(latLng) {
-    // this.removeAllPoligonsSat(this._prevActiveSatId);
-    console.log(`removeAllActivePoligons: `);
     this.removeAllActivePoligons();
     // Массив полигонов которые находятся в указанных кординатах
     const poligons = getTargetPoligons(latLng, this._allPoligonsSats);
-    console.log(`poligons: `, poligons);
 
     // Фильтруем только те, что выбраны, а если не выбрано, то среди всех
     let targetPoligons = poligons.concat();
-    console.log(`1 targetPoligons: `, targetPoligons);
     const checkedSats = this.props.checkedSats;
     if (checkedSats.length) {
-      console.log(`checkedSats: `, checkedSats);
       targetPoligons = [];
       checkedSats.forEach((satId) => {
         let resFilter = poligons.filter((poligon) => poligon.satId === satId);
@@ -230,9 +227,7 @@ class GoogleMap extends React.Component {
           resFilter.forEach((res) => targetPoligons.push(res));
         }
       });
-      console.log(`2 среди выбранных: `, targetPoligons);
     }
-    console.log(`3 targetPoligons: `, targetPoligons);
 
     targetPoligons.forEach((poligon) => this.setPoligon(poligon.satId, poligon.beam));
   }
@@ -283,7 +278,6 @@ class GoogleMap extends React.Component {
   }
 
   setActiveSat() {
-    console.log(`setActiveSat: `);
     const satIdx = SATELLITES.findIndex((it) => it.id === this.props.activeSatId);
     const coords = SATELLITES[satIdx].coordsSat;
     // Маркер спутника
@@ -298,7 +292,6 @@ class GoogleMap extends React.Component {
   }
 
   removeActiveSat() {
-    console.log(`removeActiveSat: `);
     if (this._markerSat) {
       this._markerSat.setMap(null);
       this._markerSat = null;
@@ -307,7 +300,6 @@ class GoogleMap extends React.Component {
 
   // Вывести все полигоны спутника
   setAllPoligonsSat(satId) {
-    console.log(`setAllPoligonsSat: `, satId);
     const satIdx = SATELLITES.findIndex((it) => it.id === satId);
     const beams = SATELLITES[satIdx].beams;
     for (let key in beams) {
@@ -319,7 +311,6 @@ class GoogleMap extends React.Component {
 
   // Убрать все полигоны спутника
   removeAllPoligonsSat(satId) {
-    console.log(`remove All polig satId: `, satId);
     if (satId) {
       const satIdx = SATELLITES.findIndex((it) => it.id === satId);
       const beams = SATELLITES[satIdx].beams;
@@ -333,16 +324,12 @@ class GoogleMap extends React.Component {
 
   // Убрать все активные полигоны и очистить this.state.poligonsSats
   removeAllActivePoligons() {
-    const a = this.state.poligonsSats.concat();
-    console.log(`1removeAllActivePoligons: `, a);
     this.state.poligonsSats.forEach((poligon) => poligon.poligon.setMap(null));
     this.setState({poligonsSats: []});
-    console.log(`2removeAllActivePoligons: `, this.state.poligonsSats);
   }
 
   // Выводим на карту полигон и сохраняем в массив
   setPoligon(satId, beam) {
-    console.log(`setPolig: `, beam);
     const satIdx = SATELLITES.findIndex((it) => it.id === satId);
     if (satId) {
       const satPoligon = new window.google.maps.Polygon({
@@ -375,7 +362,6 @@ class GoogleMap extends React.Component {
 
   // Убираем с карты полигон
   removePoligon(beam) {
-    console.log(`remove: `, beam);
     const poligons = this.state.poligonsSats;
     const poligonIdx = poligons.findIndex((obj) => obj.beam === beam);
     if (poligons[poligonIdx]) {
@@ -390,7 +376,7 @@ class GoogleMap extends React.Component {
   render() {
 
     return (
-      <div id="map" style={{width: `960px`, height: 500 + `px`}}/>
+      <div id="map" style={{width: `100%`, height: 500 + `px`}}/>
     );
   }
 }

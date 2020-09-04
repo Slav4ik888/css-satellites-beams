@@ -1,9 +1,9 @@
 import {extend} from '../../utils/utils.js';
-// import {SATELLITES} from '../../utils/const';
+import {MAP_MARKER_MAIN_POSITION} from '../../utils/const';
 
 
 const initialState = {
-  activePointerCoords: {lat: 53.59778, lng: 103.29639}, // Координаты курсора
+  activePointerCoords: MAP_MARKER_MAIN_POSITION, // Координаты курсора
   activeSatId: `1`, // Активный спутник, из которого светит луч
   checkedSats: [`1`], // Список id выбранных спутников
 };

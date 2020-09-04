@@ -7,6 +7,7 @@ import FormPlaceSetup from '../form-place-setup/form-place-setup';
 import GoogleMapEditBeam from '../google-map-edit-beam/google-map-edit-beam';
 import GoogleMap from '../google-map/google-map';
 import RenderCoordsForPoligon from '../render-coords-for-poligon/render-coords-for-poligon';
+import OfferList from '../offer-list/offer-list';
 import Footer from '../footer/footer';
 
 
@@ -28,6 +29,7 @@ const Main = ({edit = false}) => {
         <FormPlaceSetup />
         <SatList />
         <GoogleMap />
+        <OfferList />
         <Footer />
       </div>
     );
