@@ -7,6 +7,7 @@ import {SATELLITES} from '../../utils/const';
 
 
 const OfferSatInfo = ({satId, selectedCoords}) => {
+
   const sat = SATELLITES.find((it) => it.id === satId);
   const satLng = sat.coordsSat.lng;
   const mLng = selectedCoords.lng;
@@ -15,6 +16,12 @@ const OfferSatInfo = ({satId, selectedCoords}) => {
   const azimut = calcAzimut(satLng, mLng, mLat);
   const satName = sat.name;
   const range = sat.range;
+
+  // Если угол отрицательный то не выводим
+  if (angleGuidance < 0) {
+    return null;
+  }
+
 
   return (
     <div className="offerSatInfo">

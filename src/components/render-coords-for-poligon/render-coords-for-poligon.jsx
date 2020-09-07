@@ -3,7 +3,7 @@ import pt from 'prop-types';
 
 import {coordsType} from '../../utils/prop-types-templates';
 
-
+// Рисует полигон
 const RenderCoordsForPoligon = ({coords}) => {
   const startStr = `[`;
   const endStr = coords && coords.length && `{lat: ${coords[0].lat}, lng: ${coords[0].lng}}],`;

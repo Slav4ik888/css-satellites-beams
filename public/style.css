@@ -172,6 +172,8 @@ form {
   font-size: 1em;
   padding-bottom: 6px;
   color: #100055;
+  font-weight: 500;
+  font-family: arial, sans-serif;
 }
 
 .form-place-setup .input-form {

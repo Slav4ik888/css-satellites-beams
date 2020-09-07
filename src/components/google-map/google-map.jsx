@@ -4,7 +4,7 @@ import pt from 'prop-types';
 import {coordsType} from '../../utils/prop-types-templates';
 
 import {MAP_CENTER, MAP_ZOOM_START, MAP_TYPE_ID, MAP_MARKER_MAIN_POSITION} from '../../utils/const';
-import {getActivePointerCoords, getActiveSatId, getCheckedSats} from '../../reducers/search/selectors';
+import {getActivePointerCoords, getActiveSatId, getCheckedSats, getGeo} from '../../reducers/search/selectors';
 import {ActionCreator} from '../../reducers/search/search';
 
 import {SATELLITES} from '../../utils/const';
@@ -42,6 +42,10 @@ class GoogleMap extends React.Component {
     this._markerSat = null; // Иконка активного спутника на карте
     this._allPoligonsSats = []; // Все полигоны, данные по которым у нас есть
     this._prevActiveSatId = null; // Id последнего активного спутника
+
+    this.setGeocodAdress = this.setGeocodAdress.bind(this);
+    this._lastGeo = null; // Сохранённый изменённый текст в Места установки
+    this._geocoder = null;
 
     this.state = {
       mapIsReady: false,
@@ -93,33 +97,19 @@ class GoogleMap extends React.Component {
         this.setAllPoligonsToAllPoligonsSats(SATELLITES);
 
         // Инициализируем Геокодер
-        const geocoder = new window.google.maps.Geocoder();
-        document.querySelector(`.input-button`).addEventListener(`click`, () => {
-          geocodeAddress(geocoder, (coords) => {
-            // Отменить все выбранные спутники
-            this.props.checkedSats.forEach((satId) => this.props.removeCheckedSat(satId));
-            // Вывести только те полигоны которые попадают в координаты
-            // const poligons = this._allPoligonsSats;
-            // const targetPoligons = getTargetPoligons(coords, poligons);
+        this._geocoder = new window.google.maps.Geocoder();
+        document.querySelector(`.input-button`).addEventListener(`click`, () => this.setGeocodAdress(this._geocoder));
 
-            // Активируем спутники
-            // targetPoligons.forEach((sat) => this.props.setCheckedSat(sat.satId));
-            this.setTargetPoligons(coords);
+      } else { // Все последующие UPDATE
 
-            this.props.setActivePointerCoords({lat: coords.lat(), lng: coords.lng()});
-            // Установить первый активный спутник
-            // this.props.setCheckedSat(targetPoligons[0].satId);
-            // this.props.setActiveSatId(targetPoligons[0].satId);
-            // this.removeActiveBeam();
-            // this.setActiveBeam();
-            // this.removeActiveSat();
-            // this.setActiveSat();
-          });
-        });
+        // При изменении текста в Месте установки, запускаем Геокодер
+        if (this.props.geo !== this._lastGeo) {
+          this.setGeocodAdress(this._geocoder);
+          this._lastGeo = this.props.geo;
+        }
 
-      } else { // Все последующие update
+        // Если было изменение координат маркера
         if (prevProps.activePointerCoords !== this.props.activePointerCoords) {
-          // Если было изменение координат маркера
           // Удаляем старый луч и рисуем новый
           this.removeActiveMarker();
           this.setActiveMarker();
@@ -175,11 +165,23 @@ class GoogleMap extends React.Component {
 
   // Обработка изменений координат activeMarker
   setPointerCoordToReducer(event) {
-    const latLng = event.latLng;
+    const lat = event.latLng.lat();
+    const lng = event.latLng.lng();
     // eslint-disable-next-line no-console
-    console.log(`Координаты точки: `, latLng.lat() + `:` + latLng.lng());
-    this.setTargetPoligons(latLng);
-    this.props.setActivePointerCoords({lat: latLng.lat(), lng: latLng.lng()}); // В редьюсер
+    console.log(`Координаты точки: `, lat + `:` + lng);
+    this.setTargetPoligons(event.latLng); // Выводит те полигоны в которые попадают координады
+    this.props.setActivePointerCoords({lat, lng}); // В редьюсер
+  }
+
+  // Запуск Геокодера
+  setGeocodAdress(geocoder) {
+    geocodeAddress(geocoder, (coords) => {
+      // Отменить все выбранные спутники
+      this.props.checkedSats.forEach((satId) => this.props.removeCheckedSat(satId));
+      // Активируем спутники
+      this.setTargetPoligons(coords);
+      this.props.setActivePointerCoords({lat: coords.lat(), lng: coords.lng()});
+    });
   }
 
   // Сохраняем все полигоны, чтобы потом можно было в них искать
@@ -230,6 +232,10 @@ class GoogleMap extends React.Component {
     }
 
     targetPoligons.forEach((poligon) => this.setPoligon(poligon.satId, poligon.beam));
+
+    if (targetPoligons.length) { // Устанавливаем активный спутник, чтобы выведенный спутник был среди активных полигонов
+      this.props.setActiveSatId(targetPoligons[0].satId);
+    }
   }
   // satPoligon.addListener(`click`, () => {
   //   // console.log('satPoligon: ', satPoligon);
@@ -389,12 +395,14 @@ GoogleMap.propTypes = {
   removeCheckedSat: pt.func.isRequired,
   setCheckedSat: pt.func.isRequired,
   setActiveSatId: pt.func.isRequired,
+  geo: pt.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   activePointerCoords: getActivePointerCoords(state),
   activeSatId: getActiveSatId(state),
   checkedSats: getCheckedSats(state),
+  geo: getGeo(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

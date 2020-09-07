@@ -5,17 +5,13 @@ import {NameSpace} from '../name-space.js';
 const NAME_SPACE = NameSpace.SEARCH;
 
 
-export const getActivePointerCoords = (state) => {
-  return state[NAME_SPACE].activePointerCoords;
-};
+export const getActivePointerCoords = (state) => state[NAME_SPACE].activePointerCoords;
 
-export const getActiveSatId = (state) => {
-  return state[NAME_SPACE].activeSatId;
-};
+export const getActiveSatId = (state) => state[NAME_SPACE].activeSatId;
 
-export const getCheckedSats = (state) => {
-  return state[NAME_SPACE].checkedSats;
-};
+export const getCheckedSats = (state) => state[NAME_SPACE].checkedSats;
+
+export const getGeo = (state) => state[NAME_SPACE].geo;
 
 // export const getIdFromMatch = (_, props) => {
 //   if (props.match.params.id) {

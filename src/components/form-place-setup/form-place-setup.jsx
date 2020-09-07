@@ -3,31 +3,31 @@ import {connect} from 'react-redux';
 import pt from 'prop-types';
 import {coordsType} from '../../utils/prop-types-templates';
 
-import {getActivePointerCoords} from '../../reducers/search/selectors';
+import {getActivePointerCoords, getGeo} from '../../reducers/search/selectors';
 import {ActionCreator} from '../../reducers/search/search';
 
 
-const FormPlaceSetup = ({activePointerCoords, setActivePointerCoords}) => {
+const FormPlaceSetup = ({activePointerCoords, setActivePointerCoords, lastGeo, setGeo}) => {
 
+  const geoRef = useRef(null);
   const latRef = useRef(null);
   const lngRef = useRef(null);
 
   const [latInput] = useState(activePointerCoords.lat);
   const [lngInput] = useState(activePointerCoords.lng);
-  // useEffect(() => {
-  //   document.title = `Вы нажали ${count} раз`;
-  // }, [count]);
 
   const handleSubmit = (e) => {
     if (e) {
       e.preventDefault();
     }
+    const geo = geoRef.current.value;
+    if (geo !== lastGeo) {
+      setGeo(geo);
+    }
     const lat = +latRef.current.value;
     const lng = +lngRef.current.value;
 
     if (latInput && lngInput) {
-      // setLatInput(lat);
-      // setLngInput(lng);
       setActivePointerCoords({lat, lng});
     }
   };
@@ -63,12 +63,14 @@ const FormPlaceSetup = ({activePointerCoords, setActivePointerCoords}) => {
     switch (e.keyCode) {
       case 27:
         handleSubmit();
+        geoRef.current.blur();
         latRef.current.blur();
         lngRef.current.blur();
         document.removeEventListener(`keydown`, handleKeyPressed);
         break;
       case 13:
         handleSubmit();
+        geoRef.current.blur();
         latRef.current.blur();
         lngRef.current.blur();
         document.removeEventListener(`keydown`, handleKeyPressed);
@@ -83,10 +85,15 @@ const FormPlaceSetup = ({activePointerCoords, setActivePointerCoords}) => {
       <div className="container-form input-form">
         <form
           className="form"
+          onSubmit={handleSubmit}
         >
           <div className="input-place-container">
             <div className="title">МЕСТО УСТАНОВКИ</div>
-            <input type="text" className="input-place" placeholder="Укажите адрес" />
+            <input type="text" className="input-place" placeholder="Укажите адрес"
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              ref={geoRef}
+            />
           </div>
 
           <div className="input-coord-container">
@@ -123,15 +130,21 @@ const FormPlaceSetup = ({activePointerCoords, setActivePointerCoords}) => {
 FormPlaceSetup.propTypes = {
   activePointerCoords: pt.shape(coordsType).isRequired,
   setActivePointerCoords: pt.func.isRequired,
+  lastGeo: pt.string.isRequired,
+  setGeo: pt.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   activePointerCoords: getActivePointerCoords(state),
+  lastGeo: getGeo(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setActivePointerCoords(coords) {
     dispatch(ActionCreator.setActivePointerCoords(coords));
+  },
+  setGeo(geo) {
+    dispatch(ActionCreator.setGeo(geo));
   },
 });
 
