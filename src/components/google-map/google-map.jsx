@@ -3,8 +3,10 @@ import {connect} from 'react-redux';
 import pt from 'prop-types';
 import {coordsType} from '../../utils/prop-types-templates';
 
+import OfferBox from '../offer-box/offer-box';
+
 import {MAP_CENTER, MAP_ZOOM_START, MAP_TYPE_ID, MAP_MARKER_MAIN_POSITION} from '../../utils/const';
-import {getActivePointerCoords, getActiveSatId, getCheckedSats, getGeo} from '../../reducers/search/selectors';
+import {getActivePointerCoords, getActiveSatId, getCheckedSats, getGeo, getIsMap} from '../../reducers/search/selectors';
 import {ActionCreator} from '../../reducers/search/search';
 
 import {SATELLITES} from '../../utils/const';
@@ -48,7 +50,6 @@ class GoogleMap extends React.Component {
     this._geocoder = null;
 
     this.state = {
-      mapIsReady: false,
       poligonsSats: [], // Выведенные полигоны на карту
     };
   }
@@ -60,14 +61,14 @@ class GoogleMap extends React.Component {
     script.async = true;
     script.defer = true;
     script.addEventListener(`load`, () => {
-      this.setState({mapIsReady: true});
+      this.props.setIsMap(true);
     });
 
     document.getElementsByTagName(`head`)[0].appendChild(script);
   }
 
   componentDidUpdate(prevProps) {
-    if (this.state.mapIsReady) {
+    if (this.props.isMap) {
       if (!this._map) { // Первичная прорисовка
         // Display the map
         this._map = new window.google.maps.Map(document.getElementById(`map`), {
@@ -217,6 +218,9 @@ class GoogleMap extends React.Component {
     this.removeAllActivePoligons();
     // Массив полигонов которые находятся в указанных кординатах
     const poligons = getTargetPoligons(latLng, this._allPoligonsSats);
+    // В редьюсер спутники которые попадают в координаты
+    const allSatsInCoord = [...new Set(poligons.map((pol) => pol.satId))];
+    this.props.setAllResultSats(allSatsInCoord);
 
     // Фильтруем только те, что выбраны, а если не выбрано, то среди всех
     let targetPoligons = poligons.concat();
@@ -356,13 +360,10 @@ class GoogleMap extends React.Component {
 
       this.setState((prevState) => {
         let newPols = prevState.poligonsSats.concat();
-
         return {
           poligonsSats: [...newPols, obj],
         };
       });
-
-      // satPoligon.addListener(`click`, () => this.removePoligon(satId, beam));
     }
   }
 
@@ -382,7 +383,9 @@ class GoogleMap extends React.Component {
   render() {
 
     return (
-      <div id="map" style={{width: `100%`, height: 500 + `px`}}/>
+      <div id="map" style={{width: `100%`, height: 500 + `px`}}>
+        <OfferBox />
+      </div>
     );
   }
 }
@@ -395,6 +398,9 @@ GoogleMap.propTypes = {
   removeCheckedSat: pt.func.isRequired,
   setCheckedSat: pt.func.isRequired,
   setActiveSatId: pt.func.isRequired,
+  setIsMap: pt.func.isRequired,
+  isMap: pt.bool.isRequired,
+  setAllResultSats: pt.func.isRequired,
   geo: pt.string.isRequired,
 };
 
@@ -402,6 +408,7 @@ const mapStateToProps = (state) => ({
   activePointerCoords: getActivePointerCoords(state),
   activeSatId: getActiveSatId(state),
   checkedSats: getCheckedSats(state),
+  isMap: getIsMap(state),
   geo: getGeo(state),
 });
 
@@ -417,6 +424,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   removeCheckedSat(id) {
     dispatch(ActionCreator.removeCheckedSat(id));
+  },
+  setIsMap(status) {
+    dispatch(ActionCreator.setIsMap(status));
+  },
+  setAllResultSats(sats) {
+    dispatch(ActionCreator.setAllResultSats(sats));
   },
 });
 

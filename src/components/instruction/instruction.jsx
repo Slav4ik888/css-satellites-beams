@@ -6,7 +6,7 @@ const Instruction = () => {
     <div className="instruction">
       <div className="container">
         Для поиска спутника двигайте маркер<br/>
-        или укажите координаты<br/> или место установки
+        или укажите координаты<br/> или место установки антены
       </div>
     </div>
   );
