@@ -80,6 +80,7 @@ const OfferBox = ({isMap, allResultSats, checkedSats, selectConditionOffers, set
           hover &&
             <>
               <div className="offerCategory">СПУТНИКОВЫЕ VSAT КОМПЛЕКТЫ</div>
+              <div className="description">подходящие под выбранные координаты</div>
               <div className="header">
                 <div className="name">Наименование</div>
                 <div className="saleNew">Купить</div>

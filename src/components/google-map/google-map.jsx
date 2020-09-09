@@ -6,7 +6,7 @@ import {coordsType} from '../../utils/prop-types-templates';
 import OfferBox from '../offer-box/offer-box';
 
 import {MAP_CENTER, MAP_ZOOM_START, MAP_TYPE_ID, MAP_MARKER_MAIN_POSITION} from '../../utils/const';
-import {getActivePointerCoords, getActiveSatId, getCheckedSats, getGeo, getIsMap} from '../../reducers/search/selectors';
+import {getActivePointerCoords, getActiveSatId, getCheckedSats, getCheckedSat, getGeo, getIsMap} from '../../reducers/search/selectors';
 import {ActionCreator} from '../../reducers/search/search';
 
 import {SATELLITES} from '../../utils/const';
@@ -88,6 +88,9 @@ class GoogleMap extends React.Component {
         this._activeMarker.setMap(this._map);
         this._activeMarker.addListener(`dragend`, this.setPointerCoordToReducer);
 
+        // При клике на карту маркер перемещается
+        window.google.maps.event.addListener(this._map, `click`, this.setPointerCoordToReducer);
+
         // Выводим луч и спутник и все лучи этого спутника
         this.setActiveBeam();
         this.setActiveSat();
@@ -134,11 +137,11 @@ class GoogleMap extends React.Component {
             result = prevCheckedSats.includes(id);
             if (!result) { // Значит добавился
               // console.log(`добавился: `);
-              if (prevActiveSatId) { // Если есть активный спутник
-                this.removeAllPoligonsSat(prevActiveSatId);
-              }
-              this.removeAllActivePoligons();
-              this.setAllPoligonsSat(activeSatId);
+              // if (prevActiveSatId) { // Если есть активный спутник
+              //   this.removeAllPoligonsSat(prevActiveSatId);
+              // }
+              // this.removeAllActivePoligons();
+              this.setAllPoligonsSat(this.props.checkedSat);
               this._prevActiveSatId = activeSatId;
               // Активируем новый спутник
               this.removeActiveBeam();
@@ -150,9 +153,9 @@ class GoogleMap extends React.Component {
           prevCheckedSats.forEach((id) => {
             result = checkedSats.includes(id);
             if (!result) { // Значит убавился
-              // console.log(`убавился: `);
-              // this.removeAllPoligonsSat(prevActiveSatId);
-              this.removeAllActivePoligons();
+              console.log(`убавился: `, this.props.checkedSat);
+              this.removeAllPoligonsSat(this.props.checkedSat);
+              // this.removeAllActivePoligons();
               this._prevActiveSatId = null;
             }
           });
@@ -169,7 +172,7 @@ class GoogleMap extends React.Component {
     const lat = event.latLng.lat();
     const lng = event.latLng.lng();
     // eslint-disable-next-line no-console
-    console.log(`Координаты точки: `, lat + `:` + lng);
+    // console.log(`Координаты точки: `, lat + `:` + lng);
     this.setTargetPoligons(event.latLng); // Выводит те полигоны в которые попадают координады
     this.props.setActivePointerCoords({lat, lng}); // В редьюсер
   }
@@ -395,6 +398,7 @@ GoogleMap.propTypes = {
   activeSatId: pt.string.isRequired,
   setActivePointerCoords: pt.func.isRequired,
   checkedSats: pt.arrayOf(pt.string),
+  checkedSat: pt.string.isRequired,
   removeCheckedSat: pt.func.isRequired,
   setCheckedSat: pt.func.isRequired,
   setActiveSatId: pt.func.isRequired,
@@ -408,6 +412,7 @@ const mapStateToProps = (state) => ({
   activePointerCoords: getActivePointerCoords(state),
   activeSatId: getActiveSatId(state),
   checkedSats: getCheckedSats(state),
+  checkedSat: getCheckedSat(state),
   isMap: getIsMap(state),
   geo: getGeo(state),
 });

@@ -6,7 +6,7 @@ import {calcAngleGuidance, calcAzimut} from '../../utils/calculation';
 import {SATELLITES} from '../../utils/const';
 
 
-const OfferSatInfo = ({satId, selectedCoords}) => {
+const OfferSatInfo = ({satId, selectedCoords, allResultSats}) => {
 
   const sat = SATELLITES.find((it) => it.id === satId);
   const satLng = sat.coordsSat.lng;
@@ -22,6 +22,11 @@ const OfferSatInfo = ({satId, selectedCoords}) => {
     return null;
   }
 
+  // Если луча нет то не выводим
+  const isSat = allResultSats.find((s) => satId === s);
+  if (!isSat) {
+    return null;
+  }
 
   return (
     <div className="offerSatInfo">
@@ -46,6 +51,7 @@ const OfferSatInfo = ({satId, selectedCoords}) => {
 OfferSatInfo.propTypes = {
   satId: pt.string.isRequired,
   selectedCoords: pt.shape(coordsType).isRequired,
+  allResultSats: pt.array.isRequired,
 };
 
 

@@ -5,16 +5,21 @@ import {coordsType} from '../../utils/prop-types-templates';
 
 import OfferSatInfo from '../offer-sat-info/offer-sat-info';
 
-import {getCheckedSats, getActivePointerCoords} from '../../reducers/search/selectors';
+import {getCheckedSats, getActivePointerCoords, getAllResultSats} from '../../reducers/search/selectors';
 
 
-const OfferList = ({checkedSats, activePointerCoords}) => {
+const OfferList = ({checkedSats, activePointerCoords, allResultSats}) => {
 
   return (
     <div className="offerList">
       <div className="container">
         {
-          checkedSats.map((item) => <OfferSatInfo key={item} satId={item} selectedCoords={activePointerCoords}/>)
+          checkedSats.map((item) => <OfferSatInfo
+            key={item}
+            satId={item}
+            selectedCoords={activePointerCoords}
+            allResultSats={allResultSats}
+          />)
         }
       </div>
     </div>
@@ -24,11 +29,14 @@ const OfferList = ({checkedSats, activePointerCoords}) => {
 OfferList.propTypes = {
   checkedSats: pt.arrayOf(pt.string),
   activePointerCoords: pt.shape(coordsType).isRequired,
+  allResultSats: pt.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   checkedSats: getCheckedSats(state),
   activePointerCoords: getActivePointerCoords(state),
+  allResultSats: getAllResultSats(state),
+
 });
 
 // const mapDispatchToProps = (dispatch) => ({

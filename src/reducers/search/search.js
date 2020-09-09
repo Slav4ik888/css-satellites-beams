@@ -6,6 +6,7 @@ const initialState = {
   activePointerCoords: MAP_MARKER_MAIN_POSITION, // Координаты курсора
   activeSatId: `1`, // Активный спутник, из которого светит луч
   checkedSats: [`1`], // Список id выбранных спутников
+  checkedSat: `1`, // Спутник на который нажали
   allResultSats: [], // Все спутники подходящие для выбранных координат
   selectConditionOffers: false, // Условия показа offers
   isMap: false, // Факт открытия карт
@@ -76,6 +77,7 @@ const reducer = (state = initialState, action) => {
         settedCheckedSats.push(action.payload);
         return extend(state, {
           checkedSats: settedCheckedSats,
+          checkedSat: action.payload,
         });
       } else {
         return state;
@@ -94,8 +96,11 @@ const reducer = (state = initialState, action) => {
     case ActionType.REMOVE_CHECKED_SAT:
       let removedCheckedSats = state.checkedSats.concat();
       const delIdx = removedCheckedSats.findIndex((id) => id === action.payload);
+      console.log('delIdx: ', delIdx);
+
       return extend(state, {
         checkedSats: [...removedCheckedSats.slice(0, delIdx), ...removedCheckedSats.slice(delIdx + 1)],
+        checkedSat: state.checkedSats[delIdx],
       });
 
     case ActionType.SET_IS_MAP:
