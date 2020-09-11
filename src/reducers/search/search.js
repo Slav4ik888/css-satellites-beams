@@ -96,7 +96,7 @@ const reducer = (state = initialState, action) => {
     case ActionType.REMOVE_CHECKED_SAT:
       let removedCheckedSats = state.checkedSats.concat();
       const delIdx = removedCheckedSats.findIndex((id) => id === action.payload);
-      console.log('delIdx: ', delIdx);
+      // console.log('delIdx: ', delIdx);
 
       return extend(state, {
         checkedSats: [...removedCheckedSats.slice(0, delIdx), ...removedCheckedSats.slice(delIdx + 1)],

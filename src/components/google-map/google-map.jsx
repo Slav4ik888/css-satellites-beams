@@ -128,9 +128,10 @@ class GoogleMap extends React.Component {
         const checkedSats = this.props.checkedSats;
         const prevCheckedSats = prevProps.checkedSats;
         const activeSatId = this.props.activeSatId;
-        const prevActiveSatId = this._prevActiveSatId;
+        // const prevActiveSatId = this._prevActiveSatId;
 
         if (checkedSats !== prevCheckedSats) {
+
           // Перебираем новый и проверяем добавился или убавился
           let result;
           checkedSats.forEach((id) => {
@@ -141,6 +142,12 @@ class GoogleMap extends React.Component {
               //   this.removeAllPoligonsSat(prevActiveSatId);
               // }
               // this.removeAllActivePoligons();
+
+              if (!prevCheckedSats.length) {
+                // console.log(`Нет выбранных спутников, удаляем все полигоны`);
+                this.removeAllActivePoligons();
+              }
+
               this.setAllPoligonsSat(this.props.checkedSat);
               this._prevActiveSatId = activeSatId;
               // Активируем новый спутник
@@ -153,7 +160,7 @@ class GoogleMap extends React.Component {
           prevCheckedSats.forEach((id) => {
             result = checkedSats.includes(id);
             if (!result) { // Значит убавился
-              console.log(`убавился: `, this.props.checkedSat);
+              // console.log(`убавился: `, this.props.checkedSat);
               this.removeAllPoligonsSat(this.props.checkedSat);
               // this.removeAllActivePoligons();
               this._prevActiveSatId = null;
@@ -173,6 +180,7 @@ class GoogleMap extends React.Component {
     const lng = event.latLng.lng();
     // eslint-disable-next-line no-console
     // console.log(`Координаты точки: `, lat + `:` + lng);
+
     this.setTargetPoligons(event.latLng); // Выводит те полигоны в которые попадают координады
     this.props.setActivePointerCoords({lat, lng}); // В редьюсер
   }

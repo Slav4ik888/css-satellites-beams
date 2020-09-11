@@ -19,7 +19,6 @@ const SatList = ({// activeSatId,
       setActiveSatId(id);
     } else {
       removeCheckedSat(id);
-      console.log('rem id: ', id);
     }
   };
 
