@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+// import {Link} from 'react-router-dom';
 import pt from 'prop-types';
 import {connect} from 'react-redux';
 
@@ -93,20 +94,22 @@ const OfferBox = ({isMap, allResultSats, checkedSats, selectConditionOffers, set
       <div className="container">
         {offers.map((offer) => {
           return (
-            <div className="offerBox" key={offer.id}>
-              <div className="name">{offer.name}</div>
-              {
-                hover &&
-                <>
-                  <div className="saleNew">{offer.saleNew + ` `}&#8381;</div>
-                  {
-                    offer.isRent
-                      ? <div className="rent">{offer.rent + ` `}&#8381;</div>
-                      : <div className="rent">-</div>
-                  }
-                </>
-              }
-            </div>
+            <a href={offer.url} key={offer.id} target="_blank" rel="noreferrer">
+              <div className="offerBox" >
+                <div className="name">{offer.name}</div>
+                {
+                  hover &&
+                  <>
+                    <div className="saleNew">{offer.saleNew + ` `}&#8381;</div>
+                    {
+                      offer.isRent
+                        ? <div className="rent">{offer.rent + ` `}&#8381;</div>
+                        : <div className="rent">-</div>
+                    }
+                  </>
+                }
+              </div>
+            </a>
           );
         })
         }

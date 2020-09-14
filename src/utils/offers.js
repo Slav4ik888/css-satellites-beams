@@ -27,7 +27,7 @@ export const allOffers = [
     saleNew: 35300,
     isRent: false,
     rent: 0,
-    url: ``,
+    url: `https://da-tele.com/products/38124243`,
   },
   {
     id: 4,
@@ -37,7 +37,7 @@ export const allOffers = [
     saleNew: 54000,
     isRent: false,
     rent: 0,
-    url: ``,
+    url: `https://da-tele.com/products/38124243`,
   },
   {
     id: 5,
@@ -57,7 +57,7 @@ export const allOffers = [
     saleNew: 45000,
     isRent: true,
     rent: 2650,
-    url: ``,
+    url: `https://da-tele.com/products/26170680`,
   },
   {
     id: 7,
@@ -67,7 +67,7 @@ export const allOffers = [
     saleNew: 60000,
     isRent: true,
     rent: 3530,
-    url: ``,
+    url: `https://da-tele.com/products/26170680`,
   },
   {
     id: 8,
@@ -77,7 +77,7 @@ export const allOffers = [
     saleNew: 72000,
     isRent: true,
     rent: 5200,
-    url: ``,
+    url: `https://da-tele.com/products/26170719`,
   },
   {
     id: 9,
@@ -87,7 +87,7 @@ export const allOffers = [
     saleNew: 33000,
     isRent: true,
     rent: 4200,
-    url: ``,
+    url: `https://da-tele.com/products/26170719`,
   },
   {
     id: 10,
@@ -97,7 +97,7 @@ export const allOffers = [
     saleNew: 155000,
     isRent: true,
     rent: 7150,
-    url: ``,
+    url: `https://da-tele.com/products/26170690`,
   },
 
 ];

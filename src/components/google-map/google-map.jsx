@@ -284,7 +284,7 @@ class GoogleMap extends React.Component {
     this._activeBeam = new window.google.maps.Polyline({
       path: [coords, this.props.activePointerCoords],
       geodesic: true,
-      strokeColor: `#019601`,
+      strokeColor: SATELLITES[satIdx].color,
       strokeOpacity: 1.0,
       strokeWeight: 2
     });
@@ -301,13 +301,14 @@ class GoogleMap extends React.Component {
   setActiveSat() {
     const satIdx = SATELLITES.findIndex((it) => it.id === this.props.activeSatId);
     const coords = SATELLITES[satIdx].coordsSat;
+    const iconUrl = SATELLITES[satIdx].icon;
     // Маркер спутника
     this._markerSat = new window.google.maps.Marker({
       map: this._map,
       position: coords,
       draggable: false,
       // animation: window.google.maps.Animation.DROP,
-      icon: `./img/satellite30.png`,
+      icon: iconUrl,
     });
     this._markerSat.setMap(this._map);
   }
