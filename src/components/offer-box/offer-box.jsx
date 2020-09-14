@@ -7,6 +7,7 @@ import {getIsMap, getAllResultSats, getSelectConditionOffers, getCheckedSats} fr
 import {ActionCreator} from '../../reducers/search/search';
 
 import {allOffers} from '../../utils/offers';
+import {addSpaceToNumber} from '../../utils/utils';
 
 // Отбираем только те оферы, спутники которых находятся в sats
 const selectOffers = (sats) => {
@@ -100,10 +101,10 @@ const OfferBox = ({isMap, allResultSats, checkedSats, selectConditionOffers, set
                 {
                   hover &&
                   <>
-                    <div className="saleNew">{offer.saleNew + ` `}&#8381;</div>
+                    <div className="saleNew">{addSpaceToNumber(offer.saleNew) + ` `}&#8381;</div>
                     {
                       offer.isRent
-                        ? <div className="rent">{offer.rent + ` `}&#8381;</div>
+                        ? <div className="rent">{addSpaceToNumber(offer.rent) + ` `}&#8381;</div>
                         : <div className="rent">-</div>
                     }
                   </>
