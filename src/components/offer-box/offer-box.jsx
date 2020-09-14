@@ -6,24 +6,8 @@ import {connect} from 'react-redux';
 import {getIsMap, getAllResultSats, getSelectConditionOffers, getCheckedSats} from '../../reducers/search/selectors';
 import {ActionCreator} from '../../reducers/search/search';
 
-import {allOffers} from '../../utils/offers';
 import {addSpaceToNumber} from '../../utils/utils';
-
-// Отбираем только те оферы, спутники которых находятся в sats
-const selectOffers = (sats) => {
-  let arr = [];
-
-  sats.forEach((sat) => {
-    let resFiltred = allOffers.filter((offer) => offer.sats.find((s) => s === sat));
-    if (resFiltred) {
-      arr.push(...resFiltred);
-    }
-  });
-
-  let result = new Set();
-  arr.forEach((of) => result.add(of));
-  return [...result];
-};
+import {selectOffers} from './utils';
 
 
 const OfferBox = ({isMap, allResultSats, checkedSats, selectConditionOffers, setChecked}) => {
@@ -115,6 +99,7 @@ const OfferBox = ({isMap, allResultSats, checkedSats, selectConditionOffers, set
         })
         }
       </div>
+
       {
         hover &&
           <div className="footer">

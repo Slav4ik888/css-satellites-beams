@@ -357,8 +357,8 @@ class GoogleMap extends React.Component {
       const satPoligon = new window.google.maps.Polygon({
         paths: SATELLITES[satIdx].beams[beam],
         strokeColor: SATELLITES[satIdx].color,
-        strokeOpacity: 0.8,
-        strokeWeight: 2.5,
+        strokeOpacity: 2,
+        strokeWeight: 2,
         fillColor: SATELLITES[satIdx].color,
         fillOpacity: 0.35,
       });

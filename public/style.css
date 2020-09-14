@@ -343,6 +343,9 @@ form {
 .offersBox .description {
   font-size: 1em;
   color: rgb(94, 94, 94);
+  background-color: #eafff0;
+  padding: 5px 0;
+  border-radius: 5px;
   margin-bottom: 5px;
   text-align: center;
 }
@@ -404,7 +407,10 @@ form {
   cursor: pointer;
 }
 .offersBox .offerBox:hover {
-  background-color: #eeeded;
+  /* background-color: #eeeded; */
+  background: linear-gradient( #f6fcff, #eeeded);
+  -webkit-background: linear-gradient( #f6fcff, #eeeded);
+
   -webkit-transition: 0.2s; 
   transition: 0.2s; 
 }
