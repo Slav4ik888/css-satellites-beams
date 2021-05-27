@@ -1,17 +1,18 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import pt from 'prop-types';
 import {coordsType} from '../../utils/prop-types-templates';
-
-import OfferBox from '../offer-box/offer-box';
-
-import {MAP_CENTER, MAP_ZOOM_START, MAP_TYPE_ID, MAP_MARKER_MAIN_POSITION} from '../../utils/const';
-import {getActivePointerCoords, getActiveSatId, getCheckedSats, getCheckedSat, getGeo, getIsMap} from '../../reducers/search/selectors';
+// Redux
+import {connect} from 'react-redux';
 import {ActionCreator} from '../../reducers/search/search';
-
-import {SATELLITES} from '../../utils/const';
+import {getActivePointerCoords, getActiveSatId, getCheckedSats, getCheckedSat, getGeo, getIsMap} from '../../reducers/search/selectors';
+// Components
+import OfferBox from '../offer-box/offer-box';
+// Functions
 import {geocodeAddress} from '../../utils/geocode';
 import {getTargetPoligons} from '../../utils/poligons';
+import {MAP_CENTER, MAP_ZOOM_START, MAP_TYPE_ID, MAP_MARKER_MAIN_POSITION} from '../../utils/const';
+import {SATELLITES} from '../../utils/const';
+
 
 
 class GoogleMap extends React.Component {
@@ -121,8 +122,15 @@ class GoogleMap extends React.Component {
           this.setActiveBeam();
           this.removeActiveSat();
           this.setActiveSat();
+
+          // При изменении положения курсора по координатам
+          // Берём текущую позицию маркера и пересчитываем все выведенные объекты
+          const LatLng = this._activeMarker.getPosition();
+          this.setTargetPoligons(LatLng);
+
         } else {
           // Не было изменений координат маркера
+         
         }
         // Если нажали на спутник
         const checkedSats = this.props.checkedSats;

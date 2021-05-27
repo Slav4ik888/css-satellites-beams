@@ -11,7 +11,8 @@ import OfferList from '../offer-list/offer-list';
 import Footer from '../footer/footer';
 
 
-const Main = ({edit = false}) => {
+const Main = ({ edit = false }) => {
+  
   const [coords, setCoords] = useState([]);
   const handleSetCoord = (crds) => setCoords(crds);
 
@@ -22,6 +23,7 @@ const Main = ({edit = false}) => {
         {coords && <RenderCoordsForPoligon coords={coords} />}
       </div>
     );
+    
   } else {
     return (
       <div className="container">

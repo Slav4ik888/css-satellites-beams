@@ -1,17 +1,18 @@
 const path = require(`path`);
 
+
 module.exports = {
   entry: `./src/index.js`,
   output: {
-    filename: `bundle.js`,
     // eslint-disable-next-line no-undef
-    path: path.join(__dirname, `public`)
+    path: path.join(__dirname, `public`),
+    filename: `bundle.js`
   },
   devServer: {
     // eslint-disable-next-line no-undef
     contentBase: path.join(__dirname, `public`),
     open: false,
-    port: 1337,
+    port: 5500,
     historyApiFallback: true,
   },
   module: {
@@ -27,7 +28,7 @@ module.exports = {
   },
   resolve: {
     modules: [`node_modules`, `src`],
-    extensions: [`.jsx`, `.js`, `json`, `css`]
+    extensions: [`.jsx`, `.js`, `.json`, `.css`]
   },
   devtool: `source-map`,
 };

@@ -109,30 +109,4 @@ export const addSpaceToNumber = (number, cut, char) => {
   let result = (beforeChar + afterChar);
   return result;
 };
-
 // console.log(`addSpaceToNumber: `, addSpaceToNumber(25000.9299, 3, `,`));
-
-// function throttle(func, timePause, obj) {
-//   return function (args) {
-//     let previousCall = obj.lastCall;
-//     obj.lastCall = Date.now();
-//     if (previousCall === undefined // function is being called for the first time
-//     // eslint-disable-next-line no-invalid-this
-//         || (this.lastCall - previousCall) > timePause) { // throttle time has elapsed
-//       func(args);
-//     }
-//   };
-// }
-
-// let logger = (args) => console.log(`My args are ${args}`);
-// // throttle: call the logger at most once every two seconds
-// let o = {};
-// let throttledLogger = throttle(logger, 2000, o);
-
-// throttledLogger([1, 2, 3]);
-// throttledLogger([1, 2, 3]);
-// throttledLogger([1, 2, 3]);
-// throttledLogger([1, 2, 3]);
-// throttledLogger([1, 2, 3]);
-
-// // "My args are 1, 2, 3" - logged only once

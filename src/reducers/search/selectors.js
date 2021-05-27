@@ -1,24 +1,15 @@
 // import {createSelector} from 'reselect';
-import {NameSpace} from '../name-space.js';
-
+import { NameSpace } from '../name-space.js';
 
 const NAME_SPACE = NameSpace.SEARCH;
 
-
-export const getActivePointerCoords = (state) => state[NAME_SPACE].activePointerCoords;
-
-export const getActiveSatId = (state) => state[NAME_SPACE].activeSatId;
-
-export const getCheckedSats = (state) => state[NAME_SPACE].checkedSats;
-
-export const getCheckedSat = (state) => state[NAME_SPACE].checkedSat;
-
-export const getIsMap = (state) => state[NAME_SPACE].isMap;
-
-export const getGeo = (state) => state[NAME_SPACE].geo;
-
-export const getAllResultSats = (state) => state[NAME_SPACE].allResultSats;
-
+export const getActivePointerCoords   = (state) => state[NAME_SPACE].activePointerCoords;
+export const getActiveSatId           = (state) => state[NAME_SPACE].activeSatId;
+export const getCheckedSats           = (state) => state[NAME_SPACE].checkedSats;
+export const getCheckedSat            = (state) => state[NAME_SPACE].checkedSat;
+export const getIsMap                 = (state) => state[NAME_SPACE].isMap;
+export const getGeo                   = (state) => state[NAME_SPACE].geo;
+export const getAllResultSats         = (state) => state[NAME_SPACE].allResultSats;
 export const getSelectConditionOffers = (state) => state[NAME_SPACE].selectConditionOffers;
 
 
