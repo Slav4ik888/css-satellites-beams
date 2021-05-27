@@ -16,7 +16,7 @@ import reducer from './reducers/reducer.js';
 
 
 const store = createStore(
-    reducer, applyMiddleware(thunk, logger)
+    reducer, applyMiddleware(thunk) //, logger)
 );
 
 
@@ -27,4 +27,4 @@ ReactDOM.render(
     , document.getElementById(`root`));
 
 
-// git add . && git commit -am "убрал logger" && git push origin master
+// git add . && git commit -am "fix убрал logger" && git push origin master
