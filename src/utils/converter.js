@@ -9,11 +9,11 @@
  * @returns {number} decimal
  */
 export const degToDec = (deg, min, sec) => {
-  console.log('deg: ', deg);
-  console.log('min: ', min);
-  console.log('sec: ', sec);
+  // console.log('deg: ', deg);
+  // console.log('min: ', min);
+  // console.log('sec: ', sec);
   const res = +deg + min / 60 + sec / 3600;
-  console.log('res: ', res);
+  // console.log('res: ', res);
   return res;
 };
 
