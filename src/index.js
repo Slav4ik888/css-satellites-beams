@@ -10,9 +10,9 @@ import App from './components/app/app';
 import reducer from './reducers/reducer.js';
 
 
-const logger = createLogger({
-  collapsed: true,
-});
+// const logger = createLogger({
+//   collapsed: true,
+// });
 
 
 const store = createStore(
@@ -25,3 +25,6 @@ ReactDOM.render(
       <App />
     </Provider>
     , document.getElementById(`root`));
+
+
+// git add . && git commit -am "убрал logger" && git push origin master
