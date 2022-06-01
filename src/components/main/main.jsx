@@ -31,7 +31,7 @@ const Main = ({ edit = false }) => {
         <FormPlaceSetup />
         <SatList />
         <GoogleMap />
-        <OfferList />
+        {/* <OfferList /> */}
         <Footer />
       </div>
     );
