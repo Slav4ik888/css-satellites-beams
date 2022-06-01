@@ -404,7 +404,7 @@ class GoogleMap extends React.Component {
 
     return (
       <div id="map" style={{width: `100%`, height: 500 + `px`}}>
-        <OfferBox />
+        {/* <OfferBox /> */}
       </div>
     );
   }

@@ -9,7 +9,6 @@ import {getCheckedSats, getActivePointerCoords, getAllResultSats} from '../../re
 
 
 const OfferList = ({ checkedSats, activePointerCoords, allResultSats }) => {
-  return null;
   if (!allResultSats.length || !checkedSats.length) return null;
 
   return (
