@@ -27,4 +27,4 @@ ReactDOM.render(
     , document.getElementById(`root`));
 
 
-// git add . && git commit -m "remove offerlist" && git push origin master
+// git add . && git commit -m "fix remove offerlist" && git push origin master

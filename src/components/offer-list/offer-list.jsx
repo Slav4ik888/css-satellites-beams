@@ -8,7 +8,8 @@ import OfferSatInfo from '../offer-sat-info/offer-sat-info';
 import {getCheckedSats, getActivePointerCoords, getAllResultSats} from '../../reducers/search/selectors';
 
 
-const OfferList = ({checkedSats, activePointerCoords, allResultSats}) => {
+const OfferList = ({ checkedSats, activePointerCoords, allResultSats }) => {
+  return null;
   if (!allResultSats.length || !checkedSats.length) return null;
 
   return (
